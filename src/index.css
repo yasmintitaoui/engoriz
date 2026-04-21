@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --color-black: #0a0a0a;
+  --color-white: #fafafa;
+  --color-ash: #c8c8c8;
+  --color-bone: #f0ede8;
+  --color-blush: #e8d5d0;
+  --color-charcoal: #2a2a2a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-white);
+  color: var(--color-black);
+  -webkit-font-smoothing: antialiased;
+}
