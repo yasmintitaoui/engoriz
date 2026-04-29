@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ENG-SS26-5125",
+    "customer": {
+      "fullName": "Yasmin Titaoui",
+      "email": "queenyass29@gmail.com",
+      "phone": "0656564545",
+      "city": "Casablanca",
+      "address": "Casa",
+      "apartment": "",
+      "postalCode": "",
+      "note": ""
+    },
+    "items": [
+      {
+        "id": 7,
+        "name": "BRENT OVERSIZED TEE",
+        "slug": "brent",
+        "price": 230,
+        "size": "L",
+        "color": "White / Black",
+        "quantity": 1,
+        "image": "/src/assets/products/tees/brent/front.png"
+      }
+    ],
+    "subtotal": 230,
+    "shipping": 20,
+    "total": 250,
+    "paymentMethod": "Cash on Delivery",
+    "createdAt": "2026-04-28T20:15:59.436Z",
+    "status": "new"
+  },
+  {
+    "id": "ENG-SS26-3813",
+    "customer": {
+      "fullName": "Yasmin Titaoui",
+      "email": "queenyass29@gmail.com",
+      "phone": "0656564545",
+      "city": "Casablanca",
+      "address": "Casa",
+      "apartment": "",
+      "postalCode": "",
+      "note": ""
+    },
+    "items": [
+      {
+        "id": 2,
+        "name": "LOVE PAIN TEE V2",
+        "slug": "love-pain-v2",
+        "price": 230,
+        "size": "L",
+        "color": "White / Pink",
+        "quantity": 1,
+        "image": "/src/assets/products/tees/love-pain-v2/white-pink.png"
+      }
+    ],
+    "subtotal": 230,
+    "shipping": 20,
+    "total": 250,
+    "paymentMethod": "Cash on Delivery",
+    "createdAt": "2026-04-28T20:14:32.477Z",
+    "status": "new"
+  },
+  {
+    "id": "ENG-SS26-8120",
+    "customer": {
+      "fullName": "Yasmin Titaoui",
+      "email": "queenyass29@gmail.com",
+      "phone": "0656564545",
+      "city": "Casablanca",
+      "address": "Casa",
+      "apartment": "",
+      "postalCode": "",
+      "note": ""
+    },
+    "items": [
+      {
+        "id": 1,
+        "name": "TYSONISM BLACK OVERSIZED TEE",
+        "slug": "tysonism-tee",
+        "price": 230,
+        "size": "M",
+        "color": "Black",
+        "quantity": 1,
+        "image": "/src/assets/products/tees/tysonism-black-tee/front.jpeg"
+      }
+    ],
+    "subtotal": 230,
+    "shipping": 20,
+    "total": 250,
+    "paymentMethod": "Cash on Delivery",
+    "createdAt": "2026-04-28T01:19:36.388Z",
+    "status": "new"
+  }
+]
