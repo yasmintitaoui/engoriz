@@ -28,19 +28,14 @@ export default function Home() {
       {/* HERO */}
       <section className="relative h-[100svh] overflow-hidden bg-black text-white">
 
-        {/* MOBILE IMAGE */}
-        <img
-          src={lovePainHeroMobile}
-          alt="Love Pain Campaign"
-          className="absolute inset-0 block h-full w-full object-cover object-center md:hidden"
-        />
-
-        {/* DESKTOP IMAGE */}
-        <img
-          src={lovePainHero}
-          alt="Love Pain Campaign"
-          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcSet={lovePainHero} />
+          <img
+            src={lovePainHeroMobile}
+            alt="Love Pain Campaign"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </picture>
 
         <div className="absolute inset-0 bg-black/15" />
 
