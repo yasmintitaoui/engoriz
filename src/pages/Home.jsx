@@ -13,10 +13,10 @@ const reveal = (delay = 0) => ({
   initial: { opacity: 0, y: 22 },
   animate: { opacity: 1, y: 0 },
   transition: {
-    duration: 0.8,
+    duration: .8,
     delay,
-    ease: [0.22, 1, 0.36, 1],
-  },
+    ease:[0.22,1,0.36,1]
+  }
 })
 
 export default function Home() {
@@ -24,34 +24,38 @@ export default function Home() {
 
   return (
     <main className="bg-white">
-      <section className="relative h-[100svh] overflow-hidden bg-black text-white">
-        <picture className="absolute inset-0">
-          <source
-            media="(max-width:768px)"
-            srcSet={lovePainHeroMobile}
-          />
 
-          <img
-            src={lovePainHero}
-            alt="Love Pain campaign"
-            className="h-full w-full object-cover object-center"
-          />
-        </picture>
+      <section className="relative h-[100svh] overflow-hidden bg-black text-white">
+
+        {/* Desktop Hero */}
+        <img
+          src={lovePainHero}
+          alt="Love Pain campaign"
+          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
+        />
+
+        {/* Mobile Hero */}
+        <img
+          src={lovePainHeroMobile}
+          alt="Love Pain campaign"
+          className="absolute inset-0 h-full w-full object-cover object-center md:hidden"
+        />
 
         <div className="absolute inset-0 bg-black/15" />
 
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center justify-end px-6 md:px-12">
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl items-start justify-end px-6 pt-24 md:px-12 md:pt-36">
           <div className="max-w-xl text-left">
+
             <motion.p
-              {...reveal(0.1)}
+              {...reveal(.1)}
               className="text-[10px] uppercase tracking-[0.45em] text-white/65"
             >
               {t('home.newDrop')}
             </motion.p>
 
             <motion.h1
-              {...reveal(0.2)}
-              className="mt-5 font-display text-[clamp(3.1rem,7vw,6.2rem)] uppercase leading-[0.9] tracking-[-0.03em]"
+              {...reveal(.2)}
+              className="mt-5 font-display text-[clamp(2.8rem,6vw,5.8rem)] uppercase leading-[0.9] tracking-[-0.03em]"
             >
               {t('home.heroTitle').split('\n').map((line,i)=>(
                 <span key={i}>
@@ -62,15 +66,15 @@ export default function Home() {
             </motion.h1>
 
             <motion.p
-              {...reveal(0.35)}
-              className="mt-7 max-w-sm text-[12px] uppercase leading-6 tracking-[0.22em] text-white/70"
+              {...reveal(.35)}
+              className="mt-6 max-w-sm text-[12px] uppercase leading-6 tracking-[0.22em] text-white/70"
             >
               {t('home.heroText')}
             </motion.p>
 
             <motion.div
-              {...reveal(0.5)}
-              className="mt-10 flex flex-wrap justify-start gap-4"
+              {...reveal(.5)}
+              className="mt-8 flex justify-start gap-4"
             >
               <Link
                 to="/shop#love-pain"
@@ -85,10 +89,14 @@ export default function Home() {
               >
                 {t('home.viewAll')}
               </Link>
+
             </motion.div>
+
           </div>
         </div>
+
       </section>
+
 
 
       <div className="overflow-hidden border-y border-neutral-200 bg-white py-3">
@@ -101,9 +109,9 @@ export default function Home() {
           }}
           className="flex whitespace-nowrap"
         >
-          {Array(8).fill(null).map((_,index)=>(
+          {Array(8).fill(null).map((_,i)=>(
             <span
-              key={index}
+              key={i}
               className="mx-10 font-display text-[11px] uppercase tracking-[0.35em] text-neutral-500"
             >
               {t('home.marquee')}
@@ -113,9 +121,9 @@ export default function Home() {
       </div>
 
 
-      <ProductGrid />
+      <ProductGrid/>
 
-      <BestSellers />
+      <BestSellers/>
 
 
       <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 md:pb-32">
@@ -124,7 +132,7 @@ export default function Home() {
           <div className="overflow-hidden">
             <motion.img
               src={editorial01}
-              alt="ENGORIZ editorial campaign"
+              alt="ENGORIZ editorial"
               className="h-[62vh] w-full object-cover md:h-[78vh]"
               initial={{ scale:1.05 }}
               whileInView={{ scale:1 }}
@@ -136,7 +144,6 @@ export default function Home() {
             />
           </div>
 
-
           <div className="flex flex-col justify-end bg-white p-10 md:p-16">
             <motion.div
               initial={{ opacity:0,y:22 }}
@@ -144,6 +151,7 @@ export default function Home() {
               viewport={{ once:true }}
               transition={{ duration:.8 }}
             >
+
               <p className="text-[10px] uppercase tracking-[0.38em] text-neutral-400">
                 {t('home.editorial')}
               </p>
@@ -173,6 +181,7 @@ export default function Home() {
 
         </div>
       </section>
+
     </main>
   )
 }
