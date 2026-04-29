@@ -10,13 +10,13 @@ import ProductGrid from '../components/product/ProductGrid'
 import BestSellers from '../components/product/BestSellers'
 
 const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 22 },
+  initial: { opacity: 0, y: 24 },
   animate: { opacity: 1, y: 0 },
   transition: {
     duration: .8,
     delay,
-    ease:[0.22,1,0.36,1]
-  }
+    ease: [0.22,1,0.36,1],
+  },
 })
 
 export default function Home() {
@@ -25,20 +25,21 @@ export default function Home() {
   return (
     <main className="bg-white">
 
+      {/* HERO */}
       <section className="relative h-[100svh] overflow-hidden bg-black text-white">
 
-        {/* Desktop Hero */}
-        <img
-          src={lovePainHero}
-          alt="Love Pain campaign"
-          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
-        />
-
-        {/* Mobile Hero */}
+        {/* MOBILE IMAGE */}
         <img
           src={lovePainHeroMobile}
-          alt="Love Pain campaign"
-          className="absolute inset-0 h-full w-full object-cover object-center md:hidden"
+          alt="Love Pain Campaign"
+          className="absolute inset-0 block h-full w-full object-cover object-center md:hidden"
+        />
+
+        {/* DESKTOP IMAGE */}
+        <img
+          src={lovePainHero}
+          alt="Love Pain Campaign"
+          className="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
         />
 
         <div className="absolute inset-0 bg-black/15" />
@@ -47,34 +48,34 @@ export default function Home() {
           <div className="max-w-xl text-left">
 
             <motion.p
-              {...reveal(.1)}
-              className="text-[10px] uppercase tracking-[0.45em] text-white/65"
+              {...reveal(.08)}
+              className="text-[10px] uppercase tracking-[0.45em] text-white/70"
             >
               {t('home.newDrop')}
             </motion.p>
 
             <motion.h1
-              {...reveal(.2)}
+              {...reveal(.18)}
               className="mt-5 font-display text-[clamp(2.8rem,6vw,5.8rem)] uppercase leading-[0.9] tracking-[-0.03em]"
             >
-              {t('home.heroTitle').split('\n').map((line,i)=>(
-                <span key={i}>
-                  {line}
-                  <br/>
-                </span>
-              ))}
+              LOVE PAIN
+              <br />
+              DROP — SS26
+              <br />
+              OUT NOW
             </motion.h1>
 
             <motion.p
-              {...reveal(.35)}
-              className="mt-6 max-w-sm text-[12px] uppercase leading-6 tracking-[0.22em] text-white/70"
+              {...reveal(.28)}
+              className="mt-6 max-w-sm text-[12px] uppercase leading-6 tracking-[0.22em] text-white/75"
             >
-              {t('home.heroText')}
+              A capsule born from pressure.
+              Made by demand.
             </motion.p>
 
             <motion.div
-              {...reveal(.5)}
-              className="mt-8 flex justify-start gap-4"
+              {...reveal(.4)}
+              className="mt-8 flex flex-wrap gap-4"
             >
               <Link
                 to="/shop#love-pain"
@@ -94,14 +95,14 @@ export default function Home() {
 
           </div>
         </div>
-
       </section>
 
 
 
-      <div className="overflow-hidden border-y border-neutral-200 bg-white py-3">
+      {/* MARQUEE */}
+      <section className="overflow-hidden border-y border-neutral-200 py-3">
         <motion.div
-          animate={{ x:['0%','-50%'] }}
+          animate={{ x: ['0%','-50%'] }}
           transition={{
             duration:24,
             ease:'linear',
@@ -112,27 +113,30 @@ export default function Home() {
           {Array(8).fill(null).map((_,i)=>(
             <span
               key={i}
-              className="mx-10 font-display text-[11px] uppercase tracking-[0.35em] text-neutral-500"
+              className="mx-10 text-[11px] uppercase tracking-[0.34em] text-neutral-500"
             >
               {t('home.marquee')}
             </span>
           ))}
         </motion.div>
-      </div>
+      </section>
 
 
-      <ProductGrid/>
 
-      <BestSellers/>
+      <ProductGrid />
+
+      <BestSellers />
 
 
+
+      {/* EDITORIAL */}
       <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 md:pb-32">
         <div className="grid overflow-hidden md:grid-cols-2">
 
           <div className="overflow-hidden">
             <motion.img
               src={editorial01}
-              alt="ENGORIZ editorial"
+              alt="ENGORIZ Editorial"
               className="h-[62vh] w-full object-cover md:h-[78vh]"
               initial={{ scale:1.05 }}
               whileInView={{ scale:1 }}
@@ -144,25 +148,23 @@ export default function Home() {
             />
           </div>
 
-          <div className="flex flex-col justify-end bg-white p-10 md:p-16">
+          <div className="flex flex-col justify-end p-10 md:p-16">
             <motion.div
-              initial={{ opacity:0,y:22 }}
+              initial={{ opacity:0,y:24 }}
               whileInView={{ opacity:1,y:0 }}
               viewport={{ once:true }}
               transition={{ duration:.8 }}
             >
-
               <p className="text-[10px] uppercase tracking-[0.38em] text-neutral-400">
                 {t('home.editorial')}
               </p>
 
               <h2 className="mt-4 font-display text-[clamp(3rem,6vw,5.5rem)] uppercase leading-none">
-                {t('home.builtWith').split('\n').map((line,i)=>(
-                  <span key={i}>
-                    {line}
-                    <br/>
-                  </span>
-                ))}
+                BUILT
+                <br />
+                WITH
+                <br />
+                PRESSURE
               </h2>
 
               <p className="mt-6 max-w-sm text-[13px] leading-7 text-neutral-500">
