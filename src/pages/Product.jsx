@@ -10,6 +10,23 @@ import ProductCard from '../components/product/ProductCard'
 const PLACEHOLDER =
   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200"><rect width="900" height="1200" fill="%23ffffff"/><text x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="22" fill="%23999999" letter-spacing="8">ENGORIZ</text></svg>'
 
+const sizeChart = {
+  Regular: [
+    { size: 'S', a: '65', b: '49', c: '48', d: '23' },
+    { size: 'M', a: '67', b: '52', c: '50', d: '24' },
+    { size: 'L', a: '69', b: '54', c: '53', d: '26' },
+    { size: 'XL', a: '71', b: '57', c: '56', d: '28' },
+    { size: 'XXL', a: '74', b: '59', c: '58', d: '30' },
+  ],
+  Cropped: [
+    { size: 'S', a: '58', b: '49', c: '48', d: '23' },
+    { size: 'M', a: '61', b: '52', c: '50', d: '24' },
+    { size: 'L', a: '63', b: '54', c: '53', d: '26' },
+    { size: 'XL', a: '65', b: '57', c: '56', d: '28' },
+    { size: 'XXL', a: '67', b: '59', c: '58', d: '30' },
+  ],
+}
+
 function InfoRow({ title, children }) {
   const [open, setOpen] = useState(false)
 
@@ -49,8 +66,9 @@ function InfoRow({ title, children }) {
   )
 }
 
-function SizeGuideModal({ open, onClose }) {
+function SizeGuideModal({ open, onClose, selectedFit }) {
   const { t } = useTranslation()
+  const rows = sizeChart[selectedFit] || sizeChart.Regular
 
   return (
     <AnimatePresence>
@@ -70,7 +88,7 @@ function SizeGuideModal({ open, onClose }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}
             transition={{ duration: 0.25 }}
-            className="absolute left-1/2 top-1/2 w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-white p-6 shadow-2xl md:p-8"
+            className="absolute left-1/2 top-1/2 w-[calc(100%-32px)] max-w-2xl -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-white p-6 shadow-2xl md:p-8"
           >
             <div className="flex items-start justify-between gap-6">
               <div>
@@ -79,7 +97,7 @@ function SizeGuideModal({ open, onClose }) {
                 </p>
 
                 <h2 className="mt-2 text-2xl font-black uppercase tracking-tight">
-                  {t('product.sizeGuide')}
+                  {selectedFit} {t('product.sizeGuide')}
                 </h2>
               </div>
 
@@ -93,45 +111,32 @@ function SizeGuideModal({ open, onClose }) {
             </div>
 
             <p className="mt-4 text-sm leading-6 text-neutral-500">
-              {t('product.fitNote')}
+              Measurements are in centimeters. A = length, B = chest, C =
+              shoulder, D = sleeve.
             </p>
 
             <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-200">
               <table className="w-full text-left text-sm">
-                <thead className="bg-white text-[11px] uppercase tracking-[0.24em] text-neutral-500">
+                <thead className="bg-white text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   <tr>
                     <th className="px-4 py-4 font-medium">Size</th>
-                    <th className="px-4 py-4 font-medium">Chest</th>
-                    <th className="px-4 py-4 font-medium">Length</th>
-                    <th className="px-4 py-4 font-medium">Fit</th>
+                    <th className="px-4 py-4 font-medium">A Length</th>
+                    <th className="px-4 py-4 font-medium">B Chest</th>
+                    <th className="px-4 py-4 font-medium">C Shoulder</th>
+                    <th className="px-4 py-4 font-medium">D Sleeve</th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-neutral-200">
-                  <tr>
-                    <td className="px-4 py-4 font-medium">M</td>
-                    <td className="px-4 py-4 text-neutral-500">60 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">66 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">Boxy</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-4 font-medium">L</td>
-                    <td className="px-4 py-4 text-neutral-500">63 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">69 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">Oversized</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-4 font-medium">XL</td>
-                    <td className="px-4 py-4 text-neutral-500">66 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">72 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">Oversized</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-4 font-medium">XXL</td>
-                    <td className="px-4 py-4 text-neutral-500">69 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">75 cm</td>
-                    <td className="px-4 py-4 text-neutral-500">Extra</td>
-                  </tr>
+                  {rows.map((row) => (
+                    <tr key={row.size}>
+                      <td className="px-4 py-4 font-medium">{row.size}</td>
+                      <td className="px-4 py-4 text-neutral-500">{row.a}</td>
+                      <td className="px-4 py-4 text-neutral-500">{row.b}</td>
+                      <td className="px-4 py-4 text-neutral-500">{row.c}</td>
+                      <td className="px-4 py-4 text-neutral-500">{row.d}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -148,6 +153,7 @@ export default function Product() {
   const product = useMemo(() => products.find((p) => p.slug === slug), [slug])
 
   const [selectedSize, setSelectedSize] = useState(null)
+  const [selectedFit, setSelectedFit] = useState('Regular')
   const [selectedColor, setSelectedColor] = useState(null)
   const [selectedImage, setSelectedImage] = useState('front')
   const [error, setError] = useState('')
@@ -180,6 +186,7 @@ export default function Product() {
 
   useEffect(() => {
     setSelectedSize(null)
+    setSelectedFit(product?.fits?.[0] || 'Regular')
     setSelectedColor(product?.colors?.[0]?.name || null)
     setSelectedImage('front')
     setError('')
@@ -224,7 +231,8 @@ export default function Product() {
         },
       },
       selectedSize,
-      selectedColor
+      selectedColor,
+      selectedFit
     )
 
     setError('')
@@ -237,6 +245,7 @@ export default function Product() {
       <SizeGuideModal
         open={sizeGuideOpen}
         onClose={() => setSizeGuideOpen(false)}
+        selectedFit={selectedFit}
       />
 
       <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:px-10 md:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
@@ -289,9 +298,17 @@ export default function Product() {
             {product.name}
           </h1>
 
-          <p className="mt-5 text-lg font-medium tracking-tight">
-            {product.price.toLocaleString()} dh
-          </p>
+          <div className="mt-5 flex items-baseline gap-3">
+            <p className="text-lg font-semibold tracking-tight">
+              {product.price.toLocaleString()} dh
+            </p>
+
+            {product.compareAt && (
+              <p className="text-sm text-neutral-400 line-through">
+                {product.compareAt.toLocaleString()} dh
+              </p>
+            )}
+          </div>
 
           <p className="mt-3 text-sm leading-6 text-neutral-500">
             {t('product.cod')}
@@ -340,6 +357,37 @@ export default function Product() {
             </div>
           )}
 
+          {product.fits?.length > 0 && (
+            <div className="mt-8">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-[12px] uppercase tracking-[0.22em]">
+                  Fit
+                </p>
+
+                <p className="text-sm text-neutral-500">{selectedFit}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {product.fits.map((fit) => (
+                  <button
+                    key={fit}
+                    onClick={() => {
+                      setSelectedFit(fit)
+                      setError('')
+                    }}
+                    className={`h-12 border text-sm font-medium uppercase transition ${
+                      selectedFit === fit
+                        ? 'border-black bg-black text-white'
+                        : 'border-neutral-300 bg-white hover:border-black'
+                    }`}
+                  >
+                    {fit}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mt-8">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-[12px] uppercase tracking-[0.22em]">
@@ -351,11 +399,11 @@ export default function Product() {
                 onClick={() => setSizeGuideOpen(true)}
                 className="text-[11px] uppercase tracking-[0.22em] text-neutral-500 underline underline-offset-4 transition hover:text-black"
               >
-                {t('product.sizeGuide')}
+                {selectedFit} {t('product.sizeGuide')}
               </button>
             </div>
 
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-5 gap-3">
               {product.sizes.map((size) => (
                 <button
                   key={size}
@@ -375,10 +423,6 @@ export default function Product() {
             </div>
 
             {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
-
-            <p className="mt-4 text-xs leading-5 text-neutral-400">
-              {t('product.fitNote')}
-            </p>
           </div>
 
           <button
@@ -407,11 +451,22 @@ export default function Product() {
             </InfoRow>
 
             <InfoRow title={t('product.delivery')}>
-              <p>{t('product.deliveryText')}</p>
+              <p>
+                We collaborate with OzoneExpress for express and professional
+                shipping across Morocco.
+              </p>
             </InfoRow>
 
-            <InfoRow title={t('product.reviews')}>
-              <p>{t('product.reviewsText')}</p>
+            <InfoRow title="Product Care">
+              <div className="space-y-3">
+                <p>Machine wash with similar colors.</p>
+                <p>Wash inside out.</p>
+                <p>Use a gentle cycle at max 30°C.</p>
+                <p>Tumble dry low.</p>
+                <p>Use only non-chlorine bleach when necessary.</p>
+                <p>Avoid dry cleaning.</p>
+                <p>Do not iron.</p>
+              </div>
             </InfoRow>
           </div>
         </section>

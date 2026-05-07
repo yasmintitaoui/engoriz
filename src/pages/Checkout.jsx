@@ -90,7 +90,10 @@ export default function Checkout() {
         postalCode: form.postalCode.trim(),
         note: form.note.trim(),
       },
-      items,
+      items: items.map((item) => ({
+        ...item,
+        fit: item.fit || 'Regular',
+      })),
       subtotal,
       shipping,
       total,
@@ -301,7 +304,7 @@ export default function Checkout() {
             <div className="space-y-5">
               {items.map((item) => (
                 <div
-                  key={`${item.id}-${item.size}-${item.color ?? 'none'}`}
+                  key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'Regular'}`}
                   className="flex gap-4"
                 >
                   <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-white">
@@ -319,7 +322,8 @@ export default function Checkout() {
                       </p>
 
                       <p className="mt-1 text-sm text-neutral-500">
-                        {item.color || 'Black'} · {item.size} · Qty {item.quantity}
+                        {item.color || 'Black'} · {item.fit || 'Regular'} ·{' '}
+                        {item.size} · Qty {item.quantity}
                       </p>
                     </div>
 

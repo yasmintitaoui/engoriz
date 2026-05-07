@@ -226,8 +226,8 @@ export default function AdminOrders() {
                               </p>
 
                               <p className="mt-1 text-sm text-neutral-500">
-                                {item.color || 'Black'} · Size {item.size} · Qty{' '}
-                                {item.quantity}
+                                {item.color || 'Black'} · {item.fit || 'Regular'} · Size{' '}
+                                {item.size} · Qty {item.quantity}
                               </p>
 
                               <p className="mt-1 text-sm">

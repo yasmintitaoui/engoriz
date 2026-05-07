@@ -76,14 +76,14 @@ export default function SideCart() {
                 <div className="space-y-8">
                   {items.map((item) => (
                     <div
-                      key={`${item.id}-${item.size}-${item.color ?? 'none'}`}
+                      key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'Regular'}`}
                       className="grid grid-cols-[110px_1fr] gap-6"
                     >
                       <div className="aspect-[4/5] overflow-hidden bg-neutral-100">
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-contain p-2"
                         />
                       </div>
 
@@ -95,13 +95,19 @@ export default function SideCart() {
                             </p>
 
                             <p className="mt-1 text-sm text-neutral-500">
-                              {item.size} · {item.color || 'Black'}
+                              {item.fit || 'Regular'} · {item.size} ·{' '}
+                              {item.color || 'Black'}
                             </p>
                           </div>
 
                           <button
                             onClick={() =>
-                              removeItem(item.id, item.size, item.color)
+                              removeItem(
+                                item.id,
+                                item.size,
+                                item.color,
+                                item.fit || 'Regular'
+                              )
                             }
                             aria-label={`Remove ${item.name}`}
                             className="text-neutral-500 transition hover:text-black"
@@ -114,7 +120,12 @@ export default function SideCart() {
                           <div className="flex h-10 items-center border border-neutral-300">
                             <button
                               onClick={() =>
-                                decreaseQuantity(item.id, item.size, item.color)
+                                decreaseQuantity(
+                                  item.id,
+                                  item.size,
+                                  item.color,
+                                  item.fit || 'Regular'
+                                )
                               }
                               aria-label={`Decrease quantity of ${item.name}`}
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
@@ -128,7 +139,12 @@ export default function SideCart() {
 
                             <button
                               onClick={() =>
-                                increaseQuantity(item.id, item.size, item.color)
+                                increaseQuantity(
+                                  item.id,
+                                  item.size,
+                                  item.color,
+                                  item.fit || 'Regular'
+                                )
                               }
                               aria-label={`Increase quantity of ${item.name}`}
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"

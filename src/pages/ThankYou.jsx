@@ -77,7 +77,7 @@ export default function ThankYou() {
                     {item.name}
                   </p>
                   <p className="mt-1 text-xs text-neutral-500">
-                    {item.color || 'Black'} · Size {item.size} · Qty{' '}
+                    {item.color || 'Black'} · {item.fit || 'Regular'} · Size {item.size} · Qty{' '}
                     {item.quantity}
                   </p>
                 </div>

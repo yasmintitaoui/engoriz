@@ -1,14 +1,60 @@
-import { useState } from 'react'
-import { Search, Package, Truck, CheckCircle2 } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import {
+  Search,
+  Check,
+  PackageCheck,
+  ClipboardCheck,
+  Factory,
+  Truck,
+  Home,
+  XCircle,
+} from 'lucide-react'
+import { API_URL } from '../lib/api'
 import { useTranslation } from '../i18n/useTranslation'
 
-import { API_URL } from '../lib/api' 
+const statusSteps = [
+  {
+    key: 'received',
+    label: 'Order received',
+    description: 'We received your order.',
+    icon: ClipboardCheck,
+  },
+  {
+    key: 'confirmed',
+    label: 'Confirmed',
+    description: 'Your order details are confirmed.',
+    icon: PackageCheck,
+  },
+  {
+    key: 'production',
+    label: 'In production',
+    description: 'Your tee is being prepared.',
+    icon: Factory,
+  },
+  {
+    key: 'shipped',
+    label: 'Shipped',
+    description: 'Your order is with delivery.',
+    icon: Truck,
+  },
+  {
+    key: 'delivered',
+    label: 'Delivered',
+    description: 'Your order has arrived.',
+    icon: Home,
+  },
+]
 
-const STATUS_STEPS = {
-  confirmed: 1,
-  processing: 2,
-  shipped: 3,
-  delivered: 4,
+const statusMap = {
+  new: 'received',
+  received: 'received',
+  confirmed: 'confirmed',
+  production: 'production',
+  processing: 'production',
+  ready: 'production',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  cancelled: 'cancelled',
 }
 
 export default function TrackOrder() {
@@ -16,261 +62,262 @@ export default function TrackOrder() {
 
   const [orderId, setOrderId] = useState('')
   const [phone, setPhone] = useState('')
-  const [loading, setLoading] = useState(false)
   const [order, setOrder] = useState(null)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const steps = [
-    {
-      key: 'confirmed',
-      label:
-        t('track.confirmed') || 'Confirmed',
-      icon: Package,
-    },
-    {
-      key: 'processing',
-      label:
-        t('track.processing') || 'Processing',
-      icon: Package,
-    },
-    {
-      key: 'shipped',
-      label:
-        t('track.shipped') || 'Shipped',
-      icon: Truck,
-    },
-    {
-      key: 'delivered',
-      label:
-        t('track.delivered') || 'Delivered',
-      icon: CheckCircle2,
-    },
-  ]
+  const currentStatus = statusMap[order?.status] || 'received'
 
-  async function handleTrack(e) {
+  const currentStepIndex = useMemo(() => {
+    return statusSteps.findIndex((step) => step.key === currentStatus)
+  }, [currentStatus])
+
+  const handleTrack = async (e) => {
     e.preventDefault()
-
-    if (!orderId.trim()) {
-      setError('Enter your order ID.')
-      return
-    }
 
     setLoading(true)
     setError('')
     setOrder(null)
 
     try {
-      const res = await fetch(
-        `${API_URL}/api/orders/track/${orderId.trim()}`
-      )
-
-      if (!res.ok) throw new Error()
-
+      const res = await fetch(`${API_URL}/api/orders`)
       const data = await res.json()
 
-      if (
-        phone &&
-        data.customer?.phone &&
-        phone.replace(/\s/g,'') !==
-        data.customer.phone.replace(/\s/g,'')
-      ) {
-        throw new Error()
+      const cleanedId = orderId.trim().toUpperCase()
+      const cleanedPhone = phone.replace(/\s/g, '')
+
+      const found = data.orders?.find((item) => {
+        const itemId = item.id?.toUpperCase()
+        const itemPhone = item.customer?.phone?.replace(/\s/g, '')
+
+        return itemId === cleanedId && itemPhone === cleanedPhone
+      })
+
+      if (!found) {
+        setError('No order found. Check your order number and phone.')
+        return
       }
 
-      setOrder(data)
-    } catch {
-      setError(
-        'Order not found. Check your order number and phone.'
-      )
+      setOrder(found)
+    } catch (err) {
+      console.error(err)
+      setError('Could not track order. Try again later.')
     } finally {
       setLoading(false)
     }
   }
 
-  const currentStep =
-    STATUS_STEPS[order?.status] || 1
-
   return (
-    <main className="min-h-screen bg-white px-5 py-14 md:px-10">
-      <div className="mx-auto max-w-4xl">
-
-        <div className="mb-12 text-center">
+    <main className="min-h-screen bg-white px-5 py-16 md:px-10">
+      <div className="mx-auto max-w-5xl">
+        <section className="text-center">
           <p className="text-[11px] uppercase tracking-[0.35em] text-neutral-400">
-            ENGORIZ
+            ENGORIZ Orders
           </p>
 
-          <h1 className="mt-5 text-5xl font-black uppercase tracking-tight md:text-7xl">
+          <h1 className="mt-4 text-4xl font-black uppercase tracking-tight md:text-6xl">
             {t('nav.trackOrder')}
           </h1>
 
-          <p className="mx-auto mt-6 max-w-lg text-sm leading-7 text-neutral-500">
-            {t('track.subtitle') ||
-              'Enter your order ID to check production and delivery progress.'}
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-neutral-500">
+            Enter your order number and phone number exactly as used at checkout.
           </p>
-        </div>
-
+        </section>
 
         <form
           onSubmit={handleTrack}
-          className="mx-auto max-w-2xl rounded-3xl border border-neutral-200 p-6 md:p-10"
+          className="mx-auto mt-10 max-w-3xl rounded-3xl border border-neutral-200 bg-neutral-50 p-5 md:p-7"
         >
-          <div className="grid gap-4 md:grid-cols-2">
-
+          <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
             <input
+              required
+              placeholder="Order number, e.g. ENG-SS26-4821"
               value={orderId}
-              onChange={(e)=>setOrderId(e.target.value)}
-              placeholder={
-                t('track.orderId') || 'Order ID'
-              }
-              className="h-14 rounded-xl border border-neutral-300 px-4 outline-none focus:border-black"
+              onChange={(e) => setOrderId(e.target.value)}
+              className="h-14 rounded-xl border border-neutral-300 bg-white px-4 text-sm uppercase outline-none focus:border-black"
             />
 
             <input
+              required
+              placeholder="Phone number"
               value={phone}
-              onChange={(e)=>setPhone(e.target.value)}
-              placeholder={
-                t('track.phone') ||
-                'Phone (optional)'
-              }
-              className="h-14 rounded-xl border border-neutral-300 px-4 outline-none focus:border-black"
+              onChange={(e) => setPhone(e.target.value)}
+              className="h-14 rounded-xl border border-neutral-300 bg-white px-4 text-sm outline-none focus:border-black"
             />
 
+            <button
+              disabled={loading}
+              className="flex h-14 items-center justify-center gap-2 rounded-xl bg-black px-7 text-sm font-semibold !text-white transition hover:opacity-90 disabled:opacity-50"
+            >
+              <Search size={16} />
+              {loading ? 'Checking...' : 'Track'}
+            </button>
           </div>
 
           {error && (
-            <p className="mt-4 text-sm text-red-500">
+            <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
             </p>
           )}
-
-          <button
-            disabled={loading}
-            className="mt-5 flex h-14 w-full items-center justify-center gap-3 rounded-full bg-black text-[11px] font-semibold uppercase tracking-[0.28em] !text-white transition hover:opacity-90 disabled:opacity-50"
-          >
-            <Search size={17}/>
-            {loading
-              ? (t('track.searching') || 'Searching...')
-              : (t('track.trackButton') || 'Track Order')}
-          </button>
         </form>
 
-
-
         {order && (
-          <section className="mx-auto mt-12 max-w-4xl">
+          <section className="mt-12 rounded-[32px] border border-neutral-200 bg-white p-5 shadow-[0_20px_70px_rgba(0,0,0,0.04)] md:p-8">
+            <div className="flex flex-col gap-5 border-b border-neutral-200 pb-7 md:flex-row md:items-start md:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">
+                  Order number
+                </p>
 
-            <div className="rounded-3xl border border-neutral-200 p-6 md:p-10">
+                <h2 className="mt-2 text-3xl font-black uppercase tracking-tight">
+                  {order.id}
+                </h2>
 
-              <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                <p className="mt-3 text-sm text-neutral-500">
+                  {order.customer?.fullName} · {order.customer?.city}
+                </p>
 
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-neutral-400">
-                    Order
-                  </p>
-
-                  <h2 className="mt-3 text-3xl font-black tracking-tight">
-                    #{order.orderId}
-                  </h2>
-
-                  <p className="mt-4 text-sm text-neutral-500">
-                    {order.customer?.fullName}
-                  </p>
-
-                  <p className="text-sm text-neutral-500">
-                    {order.customer?.city}
-                  </p>
-                </div>
-
-                <div className="text-left md:text-right">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-neutral-400">
-                    Status
-                  </p>
-
-                  <p className="mt-3 text-xl font-semibold capitalize">
-                    {order.status}
-                  </p>
-                </div>
-
+                <p className="mt-1 text-sm text-neutral-500">
+                  {order.customer?.phone}
+                </p>
               </div>
 
+              <div className="md:text-right">
+                <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">
+                  Total
+                </p>
 
+                <p className="mt-2 text-2xl font-semibold">
+                  MAD {order.total?.toLocaleString()}.00
+                </p>
 
-              <div className="mt-12 grid gap-8 md:grid-cols-4">
-                {steps.map((step,index)=>{
-                  const active =
-                    currentStep >= index+1
+                <p className="mt-3 inline-flex rounded-full bg-neutral-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-700">
+                  {order.status || 'received'}
+                </p>
+              </div>
+            </div>
 
-                  const Icon=step.icon
+            {currentStatus === 'cancelled' ? (
+              <div className="mt-8 flex gap-4 rounded-2xl bg-red-50 p-5 text-red-700">
+                <XCircle className="shrink-0" size={22} />
+                <div>
+                  <p className="font-semibold">Order cancelled</p>
+                  <p className="mt-1 text-sm">
+                    This order has been cancelled. Contact ENGORIZ if this looks
+                    wrong.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-8">
+                <div className="grid gap-5 md:grid-cols-5">
+                  {statusSteps.map((step, index) => {
+                    const active = index <= currentStepIndex
+                    const Icon = step.icon
 
-                  return(
-                    <div key={step.key}>
+                    return (
                       <div
-                        className={`
-                          mb-4 flex h-14 w-14 items-center justify-center rounded-full border
-                          ${
-                            active
+                        key={step.key}
+                        className={`rounded-2xl border p-4 transition ${
+                          active
                             ? 'border-black bg-black text-white'
-                            : 'border-neutral-300 text-neutral-300'
-                          }
-                        `}
+                            : 'border-neutral-200 bg-white text-neutral-400'
+                        }`}
                       >
-                        <Icon size={22}/>
+                        <div
+                          className={`flex h-10 w-10 items-center justify-center rounded-full border ${
+                            active
+                              ? 'border-white/40 bg-white text-black'
+                              : 'border-neutral-300'
+                          }`}
+                        >
+                          {active ? <Check size={16} /> : <Icon size={17} />}
+                        </div>
+
+                        <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.18em]">
+                          {step.label}
+                        </p>
+
+                        <p
+                          className={`mt-2 text-xs leading-5 ${
+                            active ? 'text-white/70' : 'text-neutral-400'
+                          }`}
+                        >
+                          {step.description}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <p className="mt-6 text-sm leading-7 text-neutral-500">
+                  Since ENGORIZ pieces are made by demand, production starts
+                  after confirmation. We collaborate with OzoneExpress for
+                  express and professional shipping across Morocco.
+                </p>
+              </div>
+            )}
+
+            <div className="mt-10 grid gap-8 border-t border-neutral-200 pt-8 lg:grid-cols-[1.2fr_0.8fr]">
+              <div>
+                <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">
+                  Items
+                </p>
+
+                <div className="mt-5 space-y-5">
+                  {order.items?.map((item, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="h-full w-full object-contain p-1"
+                        />
                       </div>
 
-                      <p
-                        className={`
-                          text-[11px] uppercase tracking-[0.25em]
-                          ${
-                            active
-                            ? 'text-black'
-                            : 'text-neutral-400'
-                          }
-                        `}
-                      >
-                        {step.label}
-                      </p>
-                    </div>
-                  )
-                })}
-              </div>
-
-
-
-              <div className="mt-12 border-t border-neutral-200 pt-8">
-                <h3 className="mb-6 text-[11px] uppercase tracking-[0.3em] text-neutral-400">
-                  Items
-                </h3>
-
-                <div className="space-y-5">
-                  {order.items?.map((item,index)=>(
-                    <div
-                      key={index}
-                      className="flex items-center justify-between gap-5"
-                    >
-                      <div>
-                        <p className="text-sm font-medium uppercase">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold uppercase leading-5">
                           {item.name}
                         </p>
 
-                        <p className="mt-1 text-sm text-neutral-500">
-                          {item.color} · {item.size} · Qty {item.quantity}
+                        <p className="mt-1 text-xs text-neutral-500">
+                          {item.color || 'Black'} · {item.fit || 'Regular'} ·
+                          Size {item.size} · Qty {item.quantity}
                         </p>
                       </div>
 
                       <p className="text-sm font-medium">
-                        MAD {(item.price * item.quantity).toLocaleString()}
+                        MAD {(item.price * item.quantity).toLocaleString()}.00
                       </p>
                     </div>
                   ))}
                 </div>
-
               </div>
 
-            </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.28em] text-neutral-400">
+                  Delivery details
+                </p>
 
+                <div className="mt-5 rounded-2xl bg-neutral-50 p-5 text-sm leading-7 text-neutral-600">
+                  <p>{order.customer?.address}</p>
+
+                  {order.customer?.apartment && (
+                    <p>{order.customer.apartment}</p>
+                  )}
+
+                  <p>{order.customer?.city}, Morocco</p>
+
+                  {order.customer?.note && (
+                    <p className="mt-4 border-t border-neutral-200 pt-4">
+                      Note: {order.customer.note}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           </section>
         )}
-
       </div>
     </main>
   )

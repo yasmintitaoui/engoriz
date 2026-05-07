@@ -37,9 +37,9 @@ router.post('/', (req, res) => {
   const orders = readOrders()
 
   const savedOrder = {
-    id: `ENG-SS26-${Math.floor(1000 + Math.random()*9000)}`,
+    id: `ENG-SS26-${Math.floor(1000 + Math.random() * 9000)}`,
     ...order,
-    status: 'new',
+    status: 'received',
   }
 
   orders.unshift(savedOrder)
@@ -61,7 +61,15 @@ router.patch('/:id/status', (req, res) => {
   const { id } = req.params
   const { status } = req.body
 
-  const allowedStatuses = ['new', 'confirmed', 'shipped', 'delivered', 'cancelled']
+  const allowedStatuses = [
+    'received',
+    'confirmed',
+    'production',
+    'ready',
+    'shipped',
+    'delivered',
+    'cancelled',
+  ]
 
   if (!allowedStatuses.includes(status)) {
     return res.status(400).json({ error: 'Invalid status' })

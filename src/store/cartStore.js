@@ -11,13 +11,14 @@ export const useCartStore = create(
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
 
-      addItem: (product, size, color = null) =>
+      addItem: (product, size, color = null, fit = 'Regular') =>
         set((state) => {
           const existingItem = state.items.find(
             (item) =>
               item.id === product.id &&
               item.size === size &&
-              item.color === color
+              item.color === color &&
+              item.fit === fit
           )
 
           if (existingItem) {
@@ -25,7 +26,8 @@ export const useCartStore = create(
               items: state.items.map((item) =>
                 item.id === product.id &&
                 item.size === size &&
-                item.color === color
+                item.color === color &&
+                item.fit === fit
                   ? { ...item, quantity: item.quantity + 1 }
                   : item
               ),
@@ -43,6 +45,7 @@ export const useCartStore = create(
                 price: product.price,
                 size,
                 color,
+                fit,
                 quantity: 1,
                 image: product.images.front,
               },
@@ -51,34 +54,41 @@ export const useCartStore = create(
           }
         }),
 
-      increaseQuantity: (id, size, color = null) =>
+      increaseQuantity: (id, size, color = null, fit = 'Regular') =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id && item.size === size && item.color === color
+            item.id === id &&
+            item.size === size &&
+            item.color === color &&
+            item.fit === fit
               ? { ...item, quantity: item.quantity + 1 }
               : item
           ),
         })),
 
-      decreaseQuantity: (id, size, color = null) =>
+      decreaseQuantity: (id, size, color = null, fit = 'Regular') =>
         set((state) => ({
           items: state.items
             .map((item) =>
-              item.id === id && item.size === size && item.color === color
+              item.id === id &&
+              item.size === size &&
+              item.color === color &&
+              item.fit === fit
                 ? { ...item, quantity: item.quantity - 1 }
                 : item
             )
             .filter((item) => item.quantity > 0),
         })),
 
-      removeItem: (id, size, color = null) =>
+      removeItem: (id, size, color = null, fit = 'Regular') =>
         set((state) => ({
           items: state.items.filter(
             (item) =>
               !(
                 item.id === id &&
                 item.size === size &&
-                item.color === color
+                item.color === color &&
+                item.fit === fit
               )
           ),
         })),
