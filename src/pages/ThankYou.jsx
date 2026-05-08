@@ -6,7 +6,9 @@ import { useTranslation } from '../i18n/useTranslation'
 
 export default function ThankYou() {
   const { t } = useTranslation()
+
   const [order, setOrder] = useState(null)
+
   const clearCart = useCartStore((state) => state.clearCart)
 
   useLayoutEffect(() => {
@@ -28,7 +30,9 @@ export default function ThankYou() {
   if (!order) {
     return (
       <main className="min-h-screen bg-white px-5 py-16">
-        <p className="text-center text-sm text-neutral-500">Loading order...</p>
+        <p className="text-center text-sm text-neutral-500">
+          Loading order...
+        </p>
       </main>
     )
   }
@@ -43,7 +47,8 @@ export default function ThankYou() {
 
           <div>
             <p className="text-sm text-neutral-500">
-              {t('thankYou.confirmation')} #{order.orderId || order.id || 'ENGORIZ'}
+              {t('thankYou.confirmation')} #
+              {order.orderId || order.id || 'ENGORIZ'}
             </p>
 
             <h1 className="mt-1 text-3xl font-black tracking-tight">
@@ -68,6 +73,8 @@ export default function ThankYou() {
                   <img
                     src={item.image}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-contain p-1"
                   />
                 </div>
@@ -76,8 +83,10 @@ export default function ThankYou() {
                   <p className="text-sm font-semibold uppercase leading-5">
                     {item.name}
                   </p>
+
                   <p className="mt-1 text-xs text-neutral-500">
-                    {item.color || 'Black'} · {item.fit || 'Regular'} · Size {item.size} · Qty{' '}
+                    {item.color || 'Black'} ·{' '}
+                    {item.fit || 'Regular'} · Size {item.size} · Qty{' '}
                     {item.quantity}
                   </p>
                 </div>
@@ -89,11 +98,40 @@ export default function ThankYou() {
             ))}
           </div>
 
-          <div className="mt-5 flex justify-between border-t border-neutral-200 pt-5 text-sm">
-            <span className="text-neutral-500">{t('thankYou.total')}</span>
-            <span className="font-semibold">
-              MAD {order.total.toLocaleString()}.00
-            </span>
+          <div className="mt-6 space-y-3 border-t border-neutral-200 pt-5 text-sm">
+            <div className="flex justify-between">
+              <span className="text-neutral-500">Subtotal</span>
+
+              <span>
+                MAD {order.subtotal?.toLocaleString() || '0'}.00
+              </span>
+            </div>
+
+            {order.discount > 0 && (
+              <div className="flex justify-between text-green-700">
+                <span>5+ Articles Discount</span>
+
+                <span>
+                  - MAD {order.discount.toLocaleString()}.00
+                </span>
+              </div>
+            )}
+
+            <div className="flex justify-between">
+              <span className="text-neutral-500">Shipping</span>
+
+              <span>
+                MAD {order.shipping?.toLocaleString() || '0'}.00
+              </span>
+            </div>
+
+            <div className="flex justify-between border-t border-neutral-200 pt-4 text-base font-semibold">
+              <span>{t('thankYou.total')}</span>
+
+              <span>
+                MAD {order.total.toLocaleString()}.00
+              </span>
+            </div>
           </div>
         </section>
 

@@ -25,7 +25,14 @@ function isValidEmail(email) {
 export default function Checkout() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { items, getTotalPrice } = useCartStore()
+
+  const {
+    items,
+    getTotalPrice,
+    getDiscount,
+    getFinalPrice,
+    getItemCount,
+  } = useCartStore()
 
   const [form, setForm] = useState({
     email: '',
@@ -43,8 +50,14 @@ export default function Checkout() {
   const [error, setError] = useState('')
 
   const subtotal = getTotalPrice()
+  const discount = getDiscount()
+  const discountedSubtotal = getFinalPrice()
+
   const shipping = form.city === 'Casablanca' ? 20 : 35
-  const total = subtotal + shipping
+
+  const total = discountedSubtotal + shipping
+
+  const itemCount = getItemCount()
 
   const fullName = useMemo(
     () => `${form.firstName} ${form.lastName}`.trim(),
@@ -59,11 +72,20 @@ export default function Checkout() {
   }
 
   const validateForm = () => {
-    if (!isValidEmail(form.email)) return 'Please enter a valid email address.'
-    if (!form.firstName.trim() || !form.lastName.trim()) return 'Please enter your full name.'
-    if (!form.address.trim()) return 'Please enter your delivery address.'
+    if (!isValidEmail(form.email))
+      return 'Please enter a valid email address.'
+
+    if (!form.firstName.trim() || !form.lastName.trim())
+      return 'Please enter your full name.'
+
+    if (!form.address.trim())
+      return 'Please enter your delivery address.'
+
     if (!form.city) return 'Please select your city.'
-    if (!isValidMoroccanPhone(form.phone)) return 'Please enter a valid Moroccan phone number.'
+
+    if (!isValidMoroccanPhone(form.phone))
+      return 'Please enter a valid Moroccan phone number.'
+
     return ''
   }
 
@@ -71,6 +93,7 @@ export default function Checkout() {
     e.preventDefault()
 
     const validationError = validateForm()
+
     if (validationError) {
       setError(validationError)
       return
@@ -90,13 +113,17 @@ export default function Checkout() {
         postalCode: form.postalCode.trim(),
         note: form.note.trim(),
       },
+
       items: items.map((item) => ({
         ...item,
         fit: item.fit || 'Regular',
       })),
+
       subtotal,
+      discount,
       shipping,
       total,
+
       paymentMethod: 'Cash on Delivery',
       createdAt: new Date().toISOString(),
     }
@@ -104,12 +131,17 @@ export default function Checkout() {
     try {
       const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(order),
       })
 
       const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Failed to place order')
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to place order')
+      }
 
       localStorage.setItem(
         'engoriz-last-order',
@@ -122,7 +154,10 @@ export default function Checkout() {
       navigate('/thank-you')
     } catch (err) {
       console.error(err)
-      setError('Something went wrong while placing your order. Please try again.')
+
+      setError(
+        'Something went wrong while placing your order. Please try again.'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -172,7 +207,10 @@ export default function Checkout() {
                     <p className="text-xs text-neutral-500">
                       {t('checkout.country')}
                     </p>
-                    <p className="mt-1 text-[15px]">{t('checkout.morocco')}</p>
+
+                    <p className="mt-1 text-[15px]">
+                      {t('checkout.morocco')}
+                    </p>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -180,7 +218,9 @@ export default function Checkout() {
                       required
                       placeholder={t('checkout.firstName')}
                       value={form.firstName}
-                      onChange={(e) => updateField('firstName', e.target.value)}
+                      onChange={(e) =>
+                        updateField('firstName', e.target.value)
+                      }
                       className={fieldClass}
                     />
 
@@ -188,7 +228,9 @@ export default function Checkout() {
                       required
                       placeholder={t('checkout.lastName')}
                       value={form.lastName}
-                      onChange={(e) => updateField('lastName', e.target.value)}
+                      onChange={(e) =>
+                        updateField('lastName', e.target.value)
+                      }
                       className={fieldClass}
                     />
                   </div>
@@ -212,7 +254,9 @@ export default function Checkout() {
                     <input
                       placeholder={t('checkout.postalCode')}
                       value={form.postalCode}
-                      onChange={(e) => updateField('postalCode', e.target.value)}
+                      onChange={(e) =>
+                        updateField('postalCode', e.target.value)
+                      }
                       className={fieldClass}
                     />
 
@@ -242,46 +286,6 @@ export default function Checkout() {
                 </div>
               </section>
 
-              <section>
-                <h2 className="mb-5 text-2xl font-black tracking-tight">
-                  {t('checkout.shippingMethod')}
-                </h2>
-
-                <div className="rounded-xl border border-neutral-300 px-5 py-5">
-                  <div className="flex items-center justify-between gap-5">
-                    <div>
-                      <p className="font-medium">
-                        {form.city === 'Casablanca'
-                          ? 'Casablanca delivery'
-                          : form.city
-                            ? 'Morocco delivery'
-                            : 'Select city first'}
-                      </p>
-
-                      <p className="mt-1 text-sm text-neutral-500">
-                        {t('checkout.cod')}
-                      </p>
-                    </div>
-
-                    <p className="font-semibold">MAD {shipping}.00</p>
-                  </div>
-                </div>
-              </section>
-
-              <section>
-                <h2 className="mb-2 text-2xl font-black tracking-tight">
-                  {t('checkout.payment')}
-                </h2>
-
-                <p className="mb-5 text-sm text-neutral-500">
-                  {t('checkout.paymentText')}
-                </p>
-
-                <div className="rounded-xl border border-black px-5 py-5">
-                  {t('checkout.cod')}
-                </div>
-              </section>
-
               {error && (
                 <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
                   {error}
@@ -293,7 +297,9 @@ export default function Checkout() {
                 disabled={isSubmitting}
                 className="h-16 w-full rounded-xl bg-black text-sm font-semibold !text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isSubmitting ? t('checkout.completing') : t('checkout.completeOrder')}
+                {isSubmitting
+                  ? t('checkout.completing')
+                  : t('checkout.completeOrder')}
               </button>
             </form>
           </div>
@@ -304,13 +310,15 @@ export default function Checkout() {
             <div className="space-y-5">
               {items.map((item) => (
                 <div
-                  key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'Regular'}`}
+                  key={`${item.id}-${item.size}-${item.color}-${item.fit}`}
                   className="flex gap-4"
                 >
                   <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-white">
                     <img
                       src={item.image}
                       alt={item.name}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-contain p-1"
                     />
                   </div>
@@ -322,8 +330,9 @@ export default function Checkout() {
                       </p>
 
                       <p className="mt-1 text-sm text-neutral-500">
-                        {item.color || 'Black'} · {item.fit || 'Regular'} ·{' '}
-                        {item.size} · Qty {item.quantity}
+                        {item.color || 'Black'} ·{' '}
+                        {item.fit || 'Regular'} · {item.size} · Qty{' '}
+                        {item.quantity}
                       </p>
                     </div>
 
@@ -335,33 +344,43 @@ export default function Checkout() {
               ))}
             </div>
 
-            <div className="mt-8 flex gap-3">
-              <input
-                placeholder={t('checkout.discountCode')}
-                className="h-14 flex-1 rounded-xl border border-neutral-300 bg-white px-4 text-sm outline-none focus:border-black"
-              />
-
-              <button
-                type="button"
-                className="h-14 rounded-xl border border-neutral-300 px-6 text-sm font-semibold text-neutral-400"
-              >
-                {t('checkout.apply')}
-              </button>
+            <div className="mt-8 rounded-2xl border border-green-200 bg-green-50 p-4">
+              {itemCount >= 5 ? (
+                <p className="text-sm font-medium text-green-700">
+                  20% OFF unlocked on 5+ articles.
+                </p>
+              ) : (
+                <p className="text-sm text-green-700">
+                  Add {5 - itemCount} more article
+                  {5 - itemCount === 1 ? '' : 's'} to unlock 20% OFF.
+                </p>
+              )}
             </div>
 
             <div className="mt-8 space-y-4 text-sm">
               <div className="flex justify-between">
                 <span>{t('checkout.subtotal')}</span>
+
                 <span>MAD {subtotal.toLocaleString()}.00</span>
               </div>
 
+              {discount > 0 && (
+                <div className="flex justify-between text-green-700">
+                  <span>5+ Articles Discount</span>
+
+                  <span>- MAD {discount.toLocaleString()}.00</span>
+                </div>
+              )}
+
               <div className="flex justify-between">
                 <span>{t('checkout.shipping')}</span>
+
                 <span>MAD {shipping}.00</span>
               </div>
 
               <div className="flex justify-between pt-3 text-2xl font-black">
                 <span>{t('checkout.total')}</span>
+
                 <span>MAD {total.toLocaleString()}.00</span>
               </div>
             </div>

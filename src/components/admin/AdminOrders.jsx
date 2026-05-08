@@ -43,18 +43,14 @@ export default function AdminOrders() {
     fetchOrders()
   }, [])
 
-  const stats = useMemo(() => {
-    return {
-      total: orders.length,
-      pending: orders.filter((order) =>
-        ['received', 'new', 'confirmed', 'production', 'ready'].includes(
-          order.status
-        )
-      ).length,
-      shipped: orders.filter((order) => order.status === 'shipped').length,
-      revenue: orders.reduce((sum, order) => sum + (order.total || 0), 0),
-    }
-  }, [orders])
+  const stats = useMemo(() => ({
+    total: orders.length,
+    active: orders.filter((order) =>
+      ['received', 'new', 'confirmed', 'production', 'ready'].includes(order.status)
+    ).length,
+    shipped: orders.filter((order) => order.status === 'shipped').length,
+    revenue: orders.reduce((sum, order) => sum + (order.total || 0), 0),
+  }), [orders])
 
   const updateStatus = async (orderId, status) => {
     try {
@@ -118,35 +114,10 @@ export default function AdminOrders() {
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
-          <div className="rounded-3xl border border-neutral-200 bg-white p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">
-              Total Orders
-            </p>
-            <h3 className="mt-3 text-3xl font-black">{stats.total}</h3>
-          </div>
-
-          <div className="rounded-3xl border border-neutral-200 bg-white p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">
-              Active Orders
-            </p>
-            <h3 className="mt-3 text-3xl font-black">{stats.pending}</h3>
-          </div>
-
-          <div className="rounded-3xl border border-neutral-200 bg-white p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">
-              Shipped
-            </p>
-            <h3 className="mt-3 text-3xl font-black">{stats.shipped}</h3>
-          </div>
-
-          <div className="rounded-3xl border border-neutral-200 bg-white p-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">
-              Revenue
-            </p>
-            <h3 className="mt-3 text-3xl font-black">
-              MAD {stats.revenue.toLocaleString()}
-            </h3>
-          </div>
+          <Stat label="Total Orders" value={stats.total} />
+          <Stat label="Active Orders" value={stats.active} />
+          <Stat label="Shipped" value={stats.shipped} />
+          <Stat label="Revenue" value={`MAD ${stats.revenue.toLocaleString()}`} />
         </div>
 
         {loading ? (
@@ -157,9 +128,7 @@ export default function AdminOrders() {
           <div className="mt-10 space-y-6">
             {orders.map((order) => {
               const normalizedStatus =
-                order.status === 'new'
-                  ? 'received'
-                  : order.status || 'received'
+                order.status === 'new' ? 'received' : order.status || 'received'
 
               return (
                 <article
@@ -188,14 +157,21 @@ export default function AdminOrders() {
                     </div>
 
                     <div className="flex flex-col gap-3 md:items-end">
-                      <p className="text-2xl font-semibold">
-                        MAD {order.total?.toLocaleString()}.00
-                      </p>
+                      <div className="md:text-right">
+                        {order.discount > 0 && (
+                          <p className="text-sm font-medium text-green-700">
+                            - MAD {order.discount.toLocaleString()}.00 discount
+                          </p>
+                        )}
+
+                        <p className="text-2xl font-semibold">
+                          MAD {order.total?.toLocaleString()}.00
+                        </p>
+                      </div>
 
                       <span
                         className={`w-fit rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] ${
-                          statusStyles[normalizedStatus] ||
-                          statusStyles.received
+                          statusStyles[normalizedStatus] || statusStyles.received
                         }`}
                       >
                         {normalizedStatus}
@@ -216,6 +192,8 @@ export default function AdminOrders() {
                               <img
                                 src={item.image}
                                 alt={item.name}
+                                loading="lazy"
+                                decoding="async"
                                 className="h-full w-full object-contain p-1"
                               />
                             </div>
@@ -231,9 +209,7 @@ export default function AdminOrders() {
                               </p>
 
                               <p className="mt-1 text-sm">
-                                MAD{' '}
-                                {(item.price * item.quantity).toLocaleString()}
-                                .00
+                                MAD {(item.price * item.quantity).toLocaleString()}.00
                               </p>
                             </div>
                           </div>
@@ -265,6 +241,32 @@ export default function AdminOrders() {
                       </div>
                     </div>
                   </div>
+
+                  {(order.subtotal || order.shipping || order.discount) && (
+                    <div className="mt-6 rounded-2xl bg-neutral-50 p-5 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-500">Subtotal</span>
+                        <span>MAD {order.subtotal?.toLocaleString() || '0'}.00</span>
+                      </div>
+
+                      {order.discount > 0 && (
+                        <div className="mt-2 flex justify-between text-green-700">
+                          <span>5+ Articles Discount</span>
+                          <span>- MAD {order.discount.toLocaleString()}.00</span>
+                        </div>
+                      )}
+
+                      <div className="mt-2 flex justify-between">
+                        <span className="text-neutral-500">Shipping</span>
+                        <span>MAD {order.shipping?.toLocaleString() || '0'}.00</span>
+                      </div>
+
+                      <div className="mt-3 flex justify-between border-t border-neutral-200 pt-3 font-semibold">
+                        <span>Total</span>
+                        <span>MAD {order.total?.toLocaleString()}.00</span>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mt-6 flex flex-col gap-4 border-t border-neutral-200 pt-5 md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-wrap gap-2">
@@ -298,5 +300,16 @@ export default function AdminOrders() {
         )}
       </div>
     </main>
+  )
+}
+
+function Stat({ label, value }) {
+  return (
+    <div className="rounded-3xl border border-neutral-200 bg-white p-6">
+      <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">
+        {label}
+      </p>
+      <h3 className="mt-3 text-3xl font-black">{value}</h3>
+    </div>
   )
 }

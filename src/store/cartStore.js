@@ -103,6 +103,24 @@ export const useCartStore = create(
           (total, item) => total + item.price * item.quantity,
           0
         ),
+
+      getDiscount: () => {
+        const itemCount = get().items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        )
+
+        const subtotal = get().getTotalPrice()
+
+        return itemCount >= 5 ? subtotal * 0.2 : 0
+      },
+
+      getFinalPrice: () => {
+        const subtotal = get().getTotalPrice()
+        const discount = get().getDiscount()
+
+        return subtotal - discount
+      },
     }),
     {
       name: 'engoriz-cart',

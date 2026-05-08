@@ -15,10 +15,15 @@ export default function SideCart() {
     decreaseQuantity,
     removeItem,
     getTotalPrice,
+    getDiscount,
+    getFinalPrice,
     getItemCount,
   } = useCartStore()
 
   const count = getItemCount()
+  const subtotal = getTotalPrice()
+  const discount = getDiscount()
+  const total = getFinalPrice()
 
   return (
     <AnimatePresence>
@@ -83,6 +88,8 @@ export default function SideCart() {
                         <img
                           src={item.image}
                           alt={item.name}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-contain p-2"
                         />
                       </div>
@@ -127,7 +134,6 @@ export default function SideCart() {
                                   item.fit || 'Regular'
                                 )
                               }
-                              aria-label={`Decrease quantity of ${item.name}`}
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
                             >
                               <Minus size={14} strokeWidth={1.8} />
@@ -146,7 +152,6 @@ export default function SideCart() {
                                   item.fit || 'Regular'
                                 )
                               }
-                              aria-label={`Increase quantity of ${item.name}`}
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
                             >
                               <Plus size={14} strokeWidth={1.8} />
@@ -166,20 +171,44 @@ export default function SideCart() {
 
             {items.length > 0 && (
               <div className="border-t border-neutral-200 px-8 py-7">
-                <div className="mb-6 flex items-center justify-between">
-                  <p className="text-[12px] uppercase tracking-[0.35em] text-neutral-500">
-                    {t('checkout.total')}
-                  </p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <p className="uppercase tracking-[0.22em] text-neutral-500">
+                      Subtotal
+                    </p>
+                    <p>{subtotal.toLocaleString()} dh</p>
+                  </div>
 
-                  <p className="text-2xl font-semibold tracking-tight text-black">
-                    {getTotalPrice().toLocaleString()} dh
-                  </p>
+                  {discount > 0 && (
+                    <div className="flex items-center justify-between text-green-700">
+                      <p className="uppercase tracking-[0.22em]">
+                        5+ articles discount
+                      </p>
+                      <p>-{discount.toLocaleString()} dh</p>
+                    </div>
+                  )}
+
+                  {count < 5 && (
+                    <p className="text-xs leading-5 text-neutral-400">
+                      Add {5 - count} more article{5 - count === 1 ? '' : 's'} to unlock 20% off.
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between border-t border-neutral-200 pt-4">
+                    <p className="text-[12px] uppercase tracking-[0.35em] text-neutral-500">
+                      {t('checkout.total')}
+                    </p>
+
+                    <p className="text-2xl font-semibold tracking-tight text-black">
+                      {total.toLocaleString()} dh
+                    </p>
+                  </div>
                 </div>
 
                 <Link
                   to="/checkout"
                   onClick={closeCart}
-                  className="block w-full rounded-full bg-black py-4 text-center text-[12px] font-medium uppercase tracking-[0.35em] !text-white transition hover:opacity-90"
+                  className="mt-6 block w-full rounded-full bg-black py-4 text-center text-[12px] font-medium uppercase tracking-[0.35em] !text-white transition hover:opacity-90"
                 >
                   {t('checkout.completeOrder')}
                 </Link>

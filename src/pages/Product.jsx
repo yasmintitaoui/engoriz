@@ -115,8 +115,8 @@ function SizeGuideModal({ open, onClose, selectedFit }) {
               shoulder, D = sleeve.
             </p>
 
-            <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-200">
-              <table className="w-full text-left text-sm">
+            <div className="mt-6 overflow-x-auto rounded-2xl border border-neutral-200">
+              <table className="w-full min-w-[560px] text-left text-sm">
                 <thead className="bg-white text-[11px] uppercase tracking-[0.2em] text-neutral-500">
                   <tr>
                     <th className="px-4 py-4 font-medium">Size</th>
@@ -256,6 +256,8 @@ export default function Product() {
                 key={`${selectedColor}-${selectedImage}`}
                 src={currentImage}
                 alt={`${product.name} product image`}
+                loading="lazy"
+                decoding="async"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -281,6 +283,8 @@ export default function Product() {
                   <img
                     src={activeImages[key]}
                     alt={`${product.name} ${key}`}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-contain p-1"
                   />
                 </button>
@@ -360,10 +364,7 @@ export default function Product() {
           {product.fits?.length > 0 && (
             <div className="mt-8">
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-[12px] uppercase tracking-[0.22em]">
-                  Fit
-                </p>
-
+                <p className="text-[12px] uppercase tracking-[0.22em]">Fit</p>
                 <p className="text-sm text-neutral-500">{selectedFit}</p>
               </div>
 
@@ -450,11 +451,21 @@ export default function Product() {
               </ul>
             </InfoRow>
 
-            <InfoRow title={t('product.delivery')}>
-              <p>
-                We collaborate with OzoneExpress for express and professional
-                shipping across Morocco.
-              </p>
+            <InfoRow title="Shipping & Returns">
+              <div className="space-y-3">
+                <p>
+                  We collaborate with OzoneExpress for express and professional
+                  shipping across Morocco.
+                </p>
+                <p>Orders are made by demand after confirmation.</p>
+                <p>
+                  Delivery time depends on your city and confirmation timing.
+                </p>
+                <p>
+                  Exchanges are accepted only for size issues or damaged items,
+                  and must be requested shortly after delivery.
+                </p>
+              </div>
             </InfoRow>
 
             <InfoRow title="Product Care">

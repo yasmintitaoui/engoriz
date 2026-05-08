@@ -13,8 +13,10 @@ import armageddonBack from '../assets/products/tees/armageddon/back.png'
 import brentFront from '../assets/products/tees/brent/front.png'
 import brentBack from '../assets/products/tees/brent/back.png'
 
-import immuneFront from '../assets/products/tees/immune-bs/front.jpeg'
-import immuneBack from '../assets/products/tees/immune-bs/back.jpeg'
+import immuneBlackFront from '../assets/products/tees/immune-bs/black-front.png'
+import immuneBlackBack from '../assets/products/tees/immune-bs/black-back.png'
+import immuneWhiteFront from '../assets/products/tees/immune-bs/white-front.jpeg'
+import immuneWhiteBack from '../assets/products/tees/immune-bs/white-back.jpeg'
 
 import lostFront from '../assets/products/tees/lost-in-the-desert/front.png'
 import lostBack from '../assets/products/tees/lost-in-the-desert/back.png'
@@ -22,7 +24,7 @@ import lostBack from '../assets/products/tees/lost-in-the-desert/back.png'
 import rudeFront from '../assets/products/tees/rude-man/front.png'
 import rudeBack from '../assets/products/tees/rude-man/back.png'
 
-import unicornFront from '../assets/products/tees/unicorn-tyler/front.jpeg'
+import unicornFront from '../assets/products/tees/unicorn-tyler/front.png'
 import mawjoudFront from '../assets/products/tees/mawjoud/front.png'
 
 import lovePainBlack from '../assets/products/tees/love-pain/front-black.png'
@@ -98,10 +100,10 @@ const products = [
       back: loveV2WhiteBlack,
     },
     imagesByColor: {
-      'Black / Grey': { front: loveV2BlackGrey, back: loveV2WhiteBlack },
-      'White / Black': { front: loveV2WhiteBlack, back: loveV2BlackGrey },
-      'White / Pink': { front: loveV2WhitePink, back: loveV2BlackGrey },
-      'Cream / Brown': { front: loveV2CreamBrown, back: loveV2BlackGrey },
+      'Black / Grey': { front: loveV2BlackGrey, back: loveV2BlackGrey },
+      'White / Black': { front: loveV2WhiteBlack, back: loveV2WhiteBlack },
+      'White / Pink': { front: loveV2WhitePink, back: loveV2WhitePink },
+      'Cream / Brown': { front: loveV2CreamBrown, back: loveV2CreamBrown },
     },
   },
 
@@ -212,14 +214,27 @@ const products = [
     compareAt: 249,
     collection: 'SS26 DROP 01',
     featured: true,
-    colors: [{ name: 'White / Black', hex: '#fafafa', accent: '#111111' }],
+    colors: [
+      { name: 'Black', hex: '#111111' },
+      { name: 'White', hex: '#fafafa' },
+    ],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Immune Against B.S.S.S graphic tee. Made by demand after order confirmation.',
     details: commonDetails,
     images: {
-      front: immuneFront,
-      back: immuneBack,
+      front: immuneBlackFront,
+      back: immuneBlackBack,
+    },
+    imagesByColor: {
+      Black: {
+        front: immuneBlackFront,
+        back: immuneBlackBack,
+      },
+      White: {
+        front: immuneWhiteFront,
+        back: immuneWhiteBack,
+      },
     },
   },
 
