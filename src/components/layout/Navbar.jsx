@@ -68,7 +68,7 @@ export default function Navbar() {
 
           <div className="absolute right-5 flex items-center gap-4 md:right-10 md:gap-6">
 
-            <div className="hidden items-center gap-2 text-[11px] uppercase tracking-[0.18em] sm:flex">
+            <div className="items-center gap-2 text-[10px] uppercase tracking-[0.18em]">
               <button
                 onClick={() => setLanguage('en')}
                 className={`transition ${

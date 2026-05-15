@@ -67,7 +67,7 @@ function ProductCard({ product }) {
             onError={(e) => {
               e.currentTarget.src = PLACEHOLDER
             }}
-            className="absolute inset-0 h-full w-full object-contain p-4 transition duration-700 group-hover:opacity-0 group-hover:scale-[1.015]"
+            className="absolute inset-0 h-full w-full object-contain p-4 transition duration-700 md:group-hover:opacity-0 md:group-hover:scale-[1.015]"
           />
 
           <img
@@ -78,7 +78,7 @@ function ProductCard({ product }) {
             onError={(e) => {
               e.currentTarget.src = front
             }}
-            className="absolute inset-0 h-full w-full object-contain p-4 opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-[1.015]"
+            className="absolute inset-0 hidden h-full w-full object-contain p-4 opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-[1.015] md:block"
           />
 
           <div className="absolute left-3 top-3 flex flex-col gap-2">

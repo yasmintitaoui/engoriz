@@ -38,7 +38,7 @@ export default function Home() {
 
         <div className="absolute inset-0 bg-black/10 md:bg-black/15" />
 
-        <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-7xl items-start justify-start px-6 pt-24 md:h-full md:items-start md:justify-end md:px-12 md:pt-36">
+        <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-7xl items-start justify-start px-6 pt-20 md:h-full md:items-start md:justify-end md:px-12 md:pt-36">
           <div className="max-w-[330px] text-left md:max-w-xl">
             <motion.p
               {...reveal(0.08)}
@@ -49,7 +49,7 @@ export default function Home() {
 
             <motion.h1
               {...reveal(0.18)}
-              className="mt-5 font-display text-[clamp(2.7rem,13vw,4.1rem)] uppercase leading-[0.86] tracking-[-0.03em] md:text-[clamp(2.8rem,6vw,5.8rem)]"
+              className="mt-5 font-display text-[clamp(2.4rem,11vw,3.8rem)] uppercase leading-[0.86] tracking-[-0.03em] md:text-[clamp(2.8rem,6vw,5.8rem)]"
             >
               LOVE PAIN
               <br />
