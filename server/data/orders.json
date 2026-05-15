@@ -20,7 +20,7 @@
         "size": "L",
         "color": "White / Black",
         "quantity": 1,
-        "image": "/src/assets/products/tees/brent/front.png"
+        "image": "/src/assets/products/tees/brent/front.webp"
       }
     ],
     "subtotal": 230,
@@ -51,7 +51,7 @@
         "size": "L",
         "color": "White / Pink",
         "quantity": 1,
-        "image": "/src/assets/products/tees/love-pain-v2/white-pink.png"
+        "image": "/src/assets/products/tees/love-pain-v2/white-pink.webp"
       }
     ],
     "subtotal": 230,
@@ -82,7 +82,7 @@
         "size": "M",
         "color": "Black",
         "quantity": 1,
-        "image": "/src/assets/products/tees/tysonism-black-tee/front.jpeg"
+        "image": "/src/assets/products/tees/tysonism-black-tee/front.webp"
       }
     ],
     "subtotal": 230,
