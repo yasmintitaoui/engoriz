@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from '../../i18n/useTranslation'
 import ProductCard from './ProductCard'
 import products from '../../data/products'
 
 export default function ProductGrid() {
+  const { t } = useTranslation()
   const newDropProducts = products
     .filter((product) => product.dropName === 'LOVE PAIN CAPSULE')
     .slice(0, 4)
@@ -26,7 +28,7 @@ export default function ProductGrid() {
           to="/shop"
           className="hidden border-b border-black pb-1 text-[11px] uppercase tracking-[0.28em] transition hover:opacity-50 md:block"
         >
-          View All
+          {t('home.viewAll')}
         </Link>
       </div>
 
@@ -40,7 +42,7 @@ export default function ProductGrid() {
         to="/shop"
         className="mt-10 inline-block border-b border-black pb-1 text-[11px] uppercase tracking-[0.28em] transition hover:opacity-50 md:hidden"
       >
-        View All
+        {t('home.viewAll')}
       </Link>
     </section>
   )

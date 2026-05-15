@@ -501,7 +501,7 @@ export default function Product() {
                 to="/shop"
                 className="hidden border-b border-black pb-1 text-[11px] uppercase tracking-[0.28em] transition hover:opacity-50 md:block"
               >
-                {t('home.viewAll')}
+                {t('product.viewAll')}
               </Link>
             </div>
 

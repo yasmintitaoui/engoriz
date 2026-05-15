@@ -1,3 +1,5 @@
+import { useMemo, useState } from 'react'
+import { useTranslation } from '../i18n/useTranslation'
 import ProductCard from '../components/product/ProductCard'
 import products from '../data/products'
 
@@ -34,13 +36,29 @@ function DropSection({ id, eyebrow, title, description, items }) {
 }
 
 export default function Category() {
-  const lovePainProducts = products.filter(
-    (product) => product.dropName === 'LOVE PAIN CAPSULE'
+  const { t } = useTranslation()
+  const [visibleCount, setVisibleCount] = useState(6)
+
+  const visibleProducts = useMemo(
+    () => products.slice(0, visibleCount),
+    [visibleCount]
   )
 
-  const dropOneProducts = products.filter(
-    (product) => product.collection === 'SS26 DROP 01'
+  const visibleLovePainProducts = useMemo(
+    () => visibleProducts.filter((product) => product.dropName === 'LOVE PAIN CAPSULE'),
+    [visibleProducts]
   )
+
+  const visibleDropOneProducts = useMemo(
+    () => visibleProducts.filter((product) => product.collection === 'SS26 DROP 01'),
+    [visibleProducts]
+  )
+
+  const hasMore = visibleCount < products.length
+
+  const loadMore = () => {
+    setVisibleCount((count) => Math.min(count + 6, products.length))
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -66,7 +84,7 @@ export default function Category() {
         eyebrow="New Drop"
         title="Love Pain Capsule"
         description="Two Love Pain silhouettes, multiple colorways, one capsule."
-        items={lovePainProducts}
+        items={visibleLovePainProducts}
       />
 
       <DropSection
@@ -74,8 +92,20 @@ export default function Category() {
         eyebrow="Archive Drop"
         title="SS26 Drop 01"
         description="The first ENGORIZ release — raw graphics, oversized fits, limited quantity."
-        items={dropOneProducts}
+        items={visibleDropOneProducts}
       />
+
+      {hasMore && (
+        <div className="mx-auto max-w-7xl px-6 pb-20 md:px-10">
+          <button
+            type="button"
+            onClick={loadMore}
+            className="mx-auto mt-6 block text-[12px] uppercase tracking-[0.28em] text-black underline underline-offset-4 decoration-black/70 transition hover:text-neutral-600"
+          >
+            {t('home.loadMore')}
+          </button>
+        </div>
+      )}
     </main>
   )
 }

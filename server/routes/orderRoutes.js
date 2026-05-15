@@ -1,113 +1,117 @@
 const express = require('express')
-const fs = require('fs')
-const path = require('path')
+const { createClient } = require('@supabase/supabase-js')
 
 const router = express.Router()
 
-const ordersFilePath = path.join(__dirname, '..', 'data', 'orders.json')
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
 
-function readOrders() {
+router.post('/', async (req, res) => {
   try {
-    if (!fs.existsSync(ordersFilePath)) return []
-    const file = fs.readFileSync(ordersFilePath, 'utf8')
-    return JSON.parse(file || '[]')
-  } catch (error) {
-    console.error('Failed to read orders:', error)
-    return []
+    const order = req.body
+
+    if (!order || !order.customer || !order.items?.length) {
+      return res.status(400).json({
+        error: 'Invalid order data',
+      })
+    }
+
+    const savedOrder = {
+      id: `ENG-SS26-${Math.floor(1000 + Math.random() * 9000)}`,
+      customer: order.customer,
+      items: order.items,
+      subtotal: order.subtotal || 0,
+      discount: order.discount || 0,
+      shipping: order.shipping || 0,
+      total: order.total || 0,
+      payment_method: order.paymentMethod || 'Cash on Delivery',
+      status: 'received',
+    }
+
+    const { error } = await supabase
+      .from('orders')
+      .insert(savedOrder)
+
+    if (error) {
+      console.error(error)
+      return res.status(500).json({
+        error: 'Failed to save order',
+      })
+    }
+
+    return res.status(201).json({
+      success: true,
+      orderId: savedOrder.id,
+    })
+  } catch (err) {
+    console.error(err)
+
+    return res.status(500).json({
+      error: 'Server error',
+    })
   }
-}
+})
 
-function writeOrders(orders) {
-  const dataDir = path.dirname(ordersFilePath)
+router.get('/', async (req, res) => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .order('created_at', { ascending: false })
 
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true })
+  if (error) {
+    return res.status(500).json({
+      error: 'Failed to fetch orders',
+    })
   }
 
-  fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2))
-}
-
-router.post('/', (req, res) => {
-  const order = req.body
-
-  if (!order || !order.customer || !order.items || order.items.length === 0) {
-    return res.status(400).json({ error: 'Invalid order data' })
-  }
-
-  const orders = readOrders()
-
-  const savedOrder = {
-    id: `ENG-SS26-${Math.floor(1000 + Math.random() * 9000)}`,
-    ...order,
-    status: 'received',
-  }
-
-  orders.unshift(savedOrder)
-  writeOrders(orders)
-
-  return res.status(201).json({
-    success: true,
-    message: 'Order received',
-    orderId: savedOrder.id,
+  res.json({
+    orders: data || [],
   })
 })
 
-router.get('/', (req, res) => {
-  const orders = readOrders()
-  res.json({ count: orders.length, orders })
-})
-
-router.patch('/:id/status', (req, res) => {
+router.patch('/:id/status', async (req, res) => {
   const { id } = req.params
   const { status } = req.body
 
-  const allowedStatuses = [
-    'received',
-    'confirmed',
-    'production',
-    'ready',
-    'shipped',
-    'delivered',
-    'cancelled',
-  ]
+  const { data, error } = await supabase
+    .from('orders')
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select()
 
-  if (!allowedStatuses.includes(status)) {
-    return res.status(400).json({ error: 'Invalid status' })
+  if (error) {
+    return res.status(500).json({
+      error: 'Failed to update order',
+    })
   }
-
-  const orders = readOrders()
-  const orderIndex = orders.findIndex((order) => order.id === id)
-
-  if (orderIndex === -1) {
-    return res.status(404).json({ error: 'Order not found' })
-  }
-
-  orders[orderIndex].status = status
-  orders[orderIndex].updatedAt = new Date().toISOString()
-
-  writeOrders(orders)
 
   res.json({
     success: true,
-    order: orders[orderIndex],
+    order: data?.[0],
   })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params
 
-  const orders = readOrders()
-  const filteredOrders = orders.filter((order) => order.id !== id)
+  const { error } = await supabase
+    .from('orders')
+    .delete()
+    .eq('id', id)
 
-  if (filteredOrders.length === orders.length) {
-    return res.status(404).json({ error: 'Order not found' })
+  if (error) {
+    return res.status(500).json({
+      error: 'Failed to delete order',
+    })
   }
-
-  writeOrders(filteredOrders)
 
   res.json({
     success: true,
-    message: 'Order deleted',
   })
 })
 
