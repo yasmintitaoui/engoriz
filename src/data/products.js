@@ -1,39 +1,39 @@
-import tysonismFront from '../assets/products/tees/tysonism/front.png'
-import tysonismBack from '../assets/products/tees/tysonism/back.png'
+import tysonismFront from '../assets/products/tees/tysonism/front.webp'
+import tysonismBack from '../assets/products/tees/tysonism/back.webp'
 
-import gtdFront from '../assets/products/tees/gtd/front.png'
-import gtdBack from '../assets/products/tees/gtd/back.png'
+import gtdFront from '../assets/products/tees/gtd/front.webp'
+import gtdBack from '../assets/products/tees/gtd/back.webp'
 
-import worldSaversFront from '../assets/products/tees/world-savers/front.png'
-import worldSaversBack from '../assets/products/tees/world-savers/back.png'
+import worldSaversFront from '../assets/products/tees/world-savers/front.webp'
+import worldSaversBack from '../assets/products/tees/world-savers/back.webp'
 
-import armageddonFront from '../assets/products/tees/armageddon/front.png'
-import armageddonBack from '../assets/products/tees/armageddon/back.png'
+import armageddonFront from '../assets/products/tees/armageddon/front.webp'
+import armageddonBack from '../assets/products/tees/armageddon/back.webp'
 
-import brentFront from '../assets/products/tees/brent/front.png'
-import brentBack from '../assets/products/tees/brent/back.png'
+import brentFront from '../assets/products/tees/brent/front.webp'
+import brentBack from '../assets/products/tees/brent/back.webp'
 
-import immuneBlackFront from '../assets/products/tees/immune-bs/black-front.png'
-import immuneBlackBack from '../assets/products/tees/immune-bs/black-back.png'
-import immuneWhiteFront from '../assets/products/tees/immune-bs/white-front.jpeg'
-import immuneWhiteBack from '../assets/products/tees/immune-bs/white-back.jpeg'
+import immuneBlackFront from '../assets/products/tees/immune-bs/black-front.webp'
+import immuneBlackBack from '../assets/products/tees/immune-bs/black-back.webp'
+import immuneWhiteFront from '../assets/products/tees/immune-bs/white-front.webp'
+import immuneWhiteBack from '../assets/products/tees/immune-bs/white-back.webp'
 
-import lostFront from '../assets/products/tees/lost-in-the-desert/front.png'
-import lostBack from '../assets/products/tees/lost-in-the-desert/back.png'
+import lostFront from '../assets/products/tees/lost-in-the-desert/front.webp'
+import lostBack from '../assets/products/tees/lost-in-the-desert/back.webp'
 
-import rudeFront from '../assets/products/tees/rude-man/front.png'
-import rudeBack from '../assets/products/tees/rude-man/back.png'
+import rudeFront from '../assets/products/tees/rude-man/front.webp'
+import rudeBack from '../assets/products/tees/rude-man/back.webp'
 
-import unicornFront from '../assets/products/tees/unicorn-tyler/front.png'
-import mawjoudFront from '../assets/products/tees/mawjoud/front.png'
+import unicornFront from '../assets/products/tees/unicorn-tyler/front.webp'
+import mawjoudFront from '../assets/products/tees/mawjoud/front.webp'
 
-import lovePainBlack from '../assets/products/tees/love-pain/front-black.png'
-import lovePainWhite from '../assets/products/tees/love-pain/front-white.png'
+import lovePainBlack from '../assets/products/tees/love-pain/front-black.webp'
+import lovePainWhite from '../assets/products/tees/love-pain/front-white.webp'
 
-import loveV2BlackGrey from '../assets/products/tees/love-pain-v2/black-grey.png'
-import loveV2WhiteBlack from '../assets/products/tees/love-pain-v2/white-black.png'
-import loveV2WhitePink from '../assets/products/tees/love-pain-v2/white-pink.png'
-import loveV2CreamBrown from '../assets/products/tees/love-pain-v2/cream-brown.png'
+import loveV2BlackGrey from '../assets/products/tees/love-pain-v2/black-grey.webp'
+import loveV2WhiteBlack from '../assets/products/tees/love-pain-v2/white-black.webp'
+import loveV2WhitePink from '../assets/products/tees/love-pain-v2/white-pink.webp'
+import loveV2CreamBrown from '../assets/products/tees/love-pain-v2/cream-brown.webp'
 
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']

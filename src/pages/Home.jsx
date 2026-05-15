@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from '../i18n/useTranslation'
 
-import lovePainHero from '../assets/campaign/love-pain-hero.png'
-import lovePainHeroMobile from '../assets/campaign/love-pain-hero-mobile.png'
-import editorial01 from '../assets/campaign/editorial-01.png'
+import lovePainHero from '../assets/campaign/love-pain-hero.webp'
+import lovePainHeroMobile from '../assets/campaign/love-pain-hero-mobile.webp'
+import editorial01 from '../assets/campaign/editorial-01.webp'
 
 import ProductGrid from '../components/product/ProductGrid'
 import BestSellers from '../components/product/BestSellers'
