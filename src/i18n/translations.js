@@ -11,6 +11,11 @@ export const translations = {
       ss26Drop01: 'SS26 Drop 01',
     },
 
+    cart: {
+      empty: 'Your cart is empty',
+      continueShopping: 'Continue Shopping',
+    },
+
     home: {
       newDrop: 'New Drop',
       heroTitle: 'LOVE PAIN\nDROP — SS26\nOUT NOW',
@@ -121,6 +126,11 @@ export const translations = {
       ss26Drop01: 'SS26 Drop 01',
     },
 
+    cart: {
+      empty: 'Votre panier est vide',
+      continueShopping: 'Continuer les achats',
+    },
+
     home: {
       newDrop: 'Nouveau Drop',
       heroTitle: 'LOVE PAIN\nDROP — SS26\nDISPONIBLE',
@@ -222,5 +232,12 @@ export const translations = {
 }
 
 export function t(language, path) {
-  return path.split('.').reduce((obj, key) => obj?.[key], translations[language]) || path
+  const locale = language?.split?.('-')[0] || 'en'
+  const dictionary = translations[language] || translations[locale] || translations.en
+
+  return (
+    path.split('.').reduce((obj, key) => obj?.[key], dictionary) ||
+    path.split('.').reduce((obj, key) => obj?.[key], translations.en) ||
+    path
+  )
 }
