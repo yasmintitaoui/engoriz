@@ -35,6 +35,13 @@ import loveV2WhiteBlack from '../assets/products/tees/love-pain-v2/white-black.w
 import loveV2WhitePink from '../assets/products/tees/love-pain-v2/white-pink.webp'
 import loveV2CreamBrown from '../assets/products/tees/love-pain-v2/cream-brown.webp'
 
+import drakeThePunkFront from '../assets/products/tees/drake-the-punk/front.webp'
+import drakeThePunkBack from '../assets/products/tees/drake-the-punk/back.webp'
+import lamarismFront from '../assets/products/tees/lamarism/front.webp'
+import lamarismBack from '../assets/products/tees/lamarism/back.webp'
+import njrFront from '../assets/products/tees/njr/front.webp'
+import njrBack from '../assets/products/tees/njr/back.webp'
+
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']
 
@@ -116,7 +123,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     bestseller: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Tysonism graphic tee. Made by demand after order confirmation.',
@@ -136,7 +143,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     bestseller: true,
-    colors: [{ name: 'Black / Gold', hex: '#111111', accent: '#b59a45' }],
+    colors: [{ name: 'Black / Gold', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'GTD inspired graphic tee. Made by demand after order confirmation.',
@@ -156,7 +163,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     bestseller: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'World Savers graphic tee. Made by demand after order confirmation.',
@@ -195,7 +202,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     newArrival: true,
-    colors: [{ name: 'White / Black', hex: '#fafafa', accent: '#111111' }],
+    colors: [{ name: 'Black', hex: '#111111'}],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Brent graphic tee. Made by demand after order confirmation.',
@@ -247,7 +254,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     newArrival: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#818589' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Lost In The Desert graphic tee. Made by demand after order confirmation.',
@@ -266,7 +273,7 @@ const products = [
     compareAt: 249,
     collection: 'SS26 DROP 01',
     featured: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Rude Man graphic tee. Made by demand after order confirmation.',
@@ -285,7 +292,7 @@ const products = [
     compareAt: 249,
     collection: 'SS26 DROP 01',
     featured: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Unicorn Tyler inspired graphic tee. Made by demand after order confirmation.',
@@ -305,7 +312,7 @@ const products = [
     collection: 'SS26 DROP 01',
     featured: true,
     newArrival: true,
-    colors: [{ name: 'Black / White', hex: '#111111', accent: '#f5f5f5' }],
+    colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Mawjoud graphic tee. Made by demand after order confirmation.',
@@ -313,6 +320,66 @@ const products = [
     images: {
       front: mawjoudFront,
       back: mawjoudFront,
+    },
+  },
+
+  {
+    id: 13,
+    name: 'DRAKE THE PUNK TEE',
+    slug: 'drake-the-punk',
+    price: 229,
+    compareAt: 249,
+    collection: 'SS26 DROP 01',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'Black / White', hex: '#FFFFFF' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'Drake The Punk oversized tee. Made by demand after order confirmation.',
+    details: commonDetails,
+    images: {
+      front: drakeThePunkFront,
+      back: drakeThePunkBack,
+    },
+  },
+
+  {
+    id: 14,
+    name: 'LAMARISM TEE',
+    slug: 'lamarism',
+    price: 229,
+    compareAt: 249,
+    collection: 'SS26 DROP 01',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'Black / White', hex: '#FFFFFF' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'Lamarism graphic tee. Made by demand after order confirmation.',
+    details: commonDetails,
+    images: {
+      front: lamarismFront,
+      back: lamarismBack,
+    },
+  },
+
+  {
+    id: 15,
+    name: 'NJR OVERSIZED TEE',
+    slug: 'njr',
+    price: 229,
+    compareAt: 249,
+    collection: 'SS26 DROP 01',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'Black / White', hex: '#111111' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'NJR graphic tee. Made by demand after order confirmation.',
+    details: commonDetails,
+    images: {
+      front: njrFront,
+      back: njrBack,
     },
   },
 ]
