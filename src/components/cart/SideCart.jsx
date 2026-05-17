@@ -84,7 +84,7 @@ export default function SideCart() {
                       key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'Regular'}`}
                       className="grid grid-cols-[110px_1fr] gap-6"
                     >
-                      <div className="aspect-[4/5] overflow-hidden bg-neutral-100">
+                      <div className="aspect-[4/5] overflow-hidden bg-white">
                         <img
                           src={item.image}
                           alt={item.name}

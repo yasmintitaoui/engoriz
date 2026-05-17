@@ -78,7 +78,7 @@ export default function Home() {
 
               <Link
                 to="/shop"
-                className="text-[10px] uppercase tracking-[0.25em] underline underline-offset-4 decoration-white/70 text-white transition hover:text-white/80 md:text-[11px]"
+                className="rounded-full border border-white px-6 py-4 text-[10px] uppercase tracking-[0.25em] transition hover:bg-white hover:text-black md:px-7 md:text-[11px]"
               >
                 {t('home.viewAll')}
               </Link>

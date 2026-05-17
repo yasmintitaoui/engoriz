@@ -22,7 +22,6 @@ export const translations = {
       heroText: 'A capsule born from pressure. Made by demand.',
       shopDrop: 'Shop Drop',
       viewAll: 'View All',
-      loadMore: 'Load More',
       marquee:
         'LOVE PAIN DROP · SS26 · MADE BY DEMAND · CASH ON DELIVERY · MOROCCO',
       editorial: 'Editorial',
@@ -51,7 +50,6 @@ export const translations = {
         'No public reviews yet. Be one of the first to wear this piece.',
       youMayAlsoLike: 'You may also like',
       moreFrom: 'More from ENGORIZ',
-      viewAll: 'View All',
     },
 
     checkout: {
@@ -139,7 +137,6 @@ export const translations = {
       heroText: 'Une capsule née sous pression. Produite à la demande.',
       shopDrop: 'Acheter le Drop',
       viewAll: 'Voir Tout',
-      loadMore: 'Voir plus',
       marquee:
         'LOVE PAIN DROP · SS26 · PRODUIT À LA DEMANDE · PAIEMENT À LA LIVRAISON · MAROC',
       editorial: 'Éditorial',
@@ -168,7 +165,6 @@ export const translations = {
         'Pas encore d’avis publics. Sois parmi les premiers à porter cette pièce.',
       youMayAlsoLike: 'Tu pourrais aussi aimer',
       moreFrom: 'Plus de ENGORIZ',
-      viewAll: 'Voir Tout',
     },
 
     checkout: {

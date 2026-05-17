@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { useTranslation } from '../i18n/useTranslation'
 import ProductCard from '../components/product/ProductCard'
 import products from '../data/products'
 
@@ -36,7 +35,6 @@ function DropSection({ id, eyebrow, title, description, items }) {
 }
 
 export default function Category() {
-  const { t } = useTranslation()
   const [visibleCount, setVisibleCount] = useState(6)
 
   const visibleProducts = useMemo(
@@ -100,9 +98,9 @@ export default function Category() {
           <button
             type="button"
             onClick={loadMore}
-            className="mx-auto mt-6 block text-[12px] uppercase tracking-[0.28em] text-black underline underline-offset-4 decoration-black/70 transition hover:text-neutral-600"
+            className="mx-auto mt-6 block rounded-full border border-black bg-white px-8 py-4 text-[12px] uppercase tracking-[0.28em] transition hover:bg-black hover:text-white"
           >
-            {t('home.loadMore')}
+            Load more
           </button>
         </div>
       )}
