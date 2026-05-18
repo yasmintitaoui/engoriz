@@ -8,7 +8,16 @@ const authRoutes = require('./routes/authRoutes')
 const app = express()
 
 app.use(cookieParser())
-app.use(cors())
+const cors = require('cors')
+
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://engoriz.com',
+    'https://www.engoriz.com',
+  ],
+  credentials: true,
+}))
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
