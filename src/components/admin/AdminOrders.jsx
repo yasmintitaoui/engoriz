@@ -1,3 +1,4 @@
+import products from '../../data/products'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Trash2 } from 'lucide-react'
@@ -240,19 +241,19 @@ export default function AdminOrders() {
                           return (
                             <div key={index} className="flex gap-4">
                               <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-                                {itemImage ? (
-                                  <img
-                                    src={itemImage}
-                                    alt={item.name}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="h-full w-full object-contain p-1"
-                                  />
-                                ) : (
-                                  <div className="flex h-full w-full items-center justify-center text-xs text-neutral-500">
-                                    No image
-                                  </div>
-                                )}
+                                <img
+  src={
+    products.find((p) => p.slug === item.slug || p.id === item.id)
+      ?.imagesByColor?.[item.color]?.front ||
+    products.find((p) => p.slug === item.slug || p.id === item.id)
+      ?.images?.front ||
+    item.image
+  }
+  alt={item.name}
+  loading="lazy"
+  decoding="async"
+  className="h-full w-full object-contain p-1"
+/>
                               </div>
 
                               <div>
