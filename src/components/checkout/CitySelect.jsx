@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from '../../i18n/useTranslation'
 
 const cities = [
   'Agadir','Ahfir','Ain Aouda','Ait Melloul','Al Hoceima','Asilah','Azemmour','Azilal',
@@ -22,11 +23,15 @@ const cities = [
 ]
 
 export default function CitySelect({ value, onChange, className }) {
+  const { t } = useTranslation()
+
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState(value || '')
+  const [customMode, setCustomMode] = useState(false)
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase()
+
     if (!q) return cities
 
     return cities.filter((city) =>
@@ -35,44 +40,91 @@ export default function CitySelect({ value, onChange, className }) {
     )
   }, [query])
 
+  const selectCity = (city) => {
+    setQuery(city)
+    setCustomMode(false)
+    onChange(city)
+    setOpen(false)
+  }
+
+  const selectOther = () => {
+    setCustomMode(true)
+    setQuery('')
+    onChange('')
+    setOpen(false)
+  }
+
   return (
     <div className="relative">
       <input
         required
         value={query}
-        placeholder="Type your city"
-        onFocus={() => setOpen(true)}
+        placeholder={
+          customMode
+            ? t('checkout.enterCity')
+            : t('checkout.typeCity')
+        }
+        onFocus={() => {
+          if (!customMode) {
+            setOpen(true)
+          }
+        }}
         onChange={(e) => {
-          setQuery(e.target.value)
-          onChange('')
-          setOpen(true)
+          const nextValue = e.target.value
+
+          setQuery(nextValue)
+
+          if (customMode) {
+            onChange(nextValue)
+          } else {
+            onChange('')
+            setOpen(true)
+          }
         }}
         className={className}
       />
 
-      {open && (
+      {customMode && (
+        <button
+          type="button"
+          onClick={() => {
+            setCustomMode(false)
+            setQuery('')
+            onChange('')
+            setOpen(true)
+          }}
+          className="mt-2 text-[11px] uppercase tracking-[0.22em] text-neutral-400 underline underline-offset-4 transition hover:text-black"
+        >
+          {t('checkout.chooseFromList')}
+        </button>
+      )}
+
+      {open && !customMode && (
         <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-64 overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-xl">
-          {results.length === 0 ? (
-            <p className="px-4 py-4 text-sm text-neutral-400">
-              City not found
-            </p>
-          ) : (
-            results.map((city) => (
-              <button
-                key={city}
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  setQuery(city)
-                  onChange(city)
-                  setOpen(false)
-                }}
-                className="block w-full px-4 py-3 text-left text-sm transition hover:bg-neutral-50"
-              >
-                {city}
-              </button>
-            ))
+          {results.length > 0 && (
+            <>
+              {results.map((city) => (
+                <button
+                  key={city}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => selectCity(city)}
+                  className="block w-full px-4 py-3 text-left text-sm transition hover:bg-neutral-50"
+                >
+                  {city}
+                </button>
+              ))}
+            </>
           )}
+
+          <button
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={selectOther}
+            className="block w-full border-t border-neutral-200 px-4 py-3 text-left text-sm font-medium text-black transition hover:bg-neutral-50"
+          >
+            {t('checkout.otherCity')}
+          </button>
         </div>
       )}
     </div>
