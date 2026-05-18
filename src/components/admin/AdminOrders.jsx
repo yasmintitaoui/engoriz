@@ -113,6 +113,19 @@ export default function AdminOrders() {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      navigate('/admin-login')
+    }
+  }
+
   return (
     <main className="min-h-screen bg-white px-5 py-12 md:px-10">
       <div className="mx-auto max-w-7xl">
@@ -127,13 +140,22 @@ export default function AdminOrders() {
             </h1>
           </div>
 
-          <button
-            onClick={fetchOrders}
-            className="flex w-fit items-center gap-2 rounded-full bg-black px-6 py-3 text-[12px] font-medium uppercase tracking-[0.22em] !text-white transition hover:opacity-90"
-          >
-            <RefreshCw size={14} />
-            Refresh
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={fetchOrders}
+              className="flex w-fit items-center gap-2 rounded-full bg-black px-6 py-3 text-[12px] font-medium uppercase tracking-[0.22em] !text-white transition hover:opacity-90"
+            >
+              <RefreshCw size={14} />
+              Refresh
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="rounded-full border border-neutral-200 bg-white px-6 py-3 text-[12px] font-medium uppercase tracking-[0.22em] text-neutral-900 transition hover:bg-neutral-50"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-4">
@@ -209,34 +231,47 @@ export default function AdminOrders() {
                       </p>
 
                       <div className="mt-4 space-y-4">
-                        {order.items?.map((item, index) => (
-                          <div key={index} className="flex gap-4">
-                            <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                loading="lazy"
-                                decoding="async"
-                                className="h-full w-full object-contain p-1"
-                              />
+                        {order.items?.map((item, index) => {
+                          const itemImage =
+                            typeof item.image === 'string'
+                              ? item.image
+                              : item.image?.src || ''
+
+                          return (
+                            <div key={index} className="flex gap-4">
+                              <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                                {itemImage ? (
+                                  <img
+                                    src={itemImage}
+                                    alt={item.name}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="h-full w-full object-contain p-1"
+                                  />
+                                ) : (
+                                  <div className="flex h-full w-full items-center justify-center text-xs text-neutral-500">
+                                    No image
+                                  </div>
+                                )}
+                              </div>
+
+                              <div>
+                                <p className="text-sm font-semibold uppercase">
+                                  {item.name}
+                                </p>
+
+                                <p className="mt-1 text-sm text-neutral-500">
+                                  {item.color || 'Black'} · {item.fit || 'Regular'} · Size{' '}
+                                  {item.size} · Qty {item.quantity}
+                                </p>
+
+                                <p className="mt-1 text-sm">
+                                  MAD {(item.price * item.quantity).toLocaleString()}.00
+                                </p>
+                              </div>
                             </div>
-
-                            <div>
-                              <p className="text-sm font-semibold uppercase">
-                                {item.name}
-                              </p>
-
-                              <p className="mt-1 text-sm text-neutral-500">
-                                {item.color || 'Black'} · {item.fit || 'Regular'} · Size{' '}
-                                {item.size} · Qty {item.quantity}
-                              </p>
-
-                              <p className="mt-1 text-sm">
-                                MAD {(item.price * item.quantity).toLocaleString()}.00
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                          )
+                        })}
                       </div>
                     </div>
 
