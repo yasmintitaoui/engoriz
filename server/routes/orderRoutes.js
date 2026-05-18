@@ -1,6 +1,7 @@
 const express = require('express')
 const { createClient } = require('@supabase/supabase-js')
 const { Resend } = require('resend')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
@@ -160,7 +161,7 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   const { data, error } = await supabase
     .from('orders')
     .select('*')
@@ -177,7 +178,7 @@ router.get('/', async (req, res) => {
   })
 })
 
-router.patch('/:id/status', async (req, res) => {
+router.patch('/:id/status', auth, async (req, res) => {
   const { id } = req.params
   const { status } = req.body
 
@@ -202,7 +203,7 @@ router.patch('/:id/status', async (req, res) => {
   })
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const { id } = req.params
 
   const { error } = await supabase

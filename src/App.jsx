@@ -9,8 +9,6 @@ import LoadingScreen from './components/ui/LoadingScreen'
 import PageTransition from './components/ui/PageTransition'
 import ScrollToTop from './components/ui/ScrollToTop'
 
-import AdminGate from './components/admin/AdminGate'
-
 import Home from './pages/Home'
 import Category from './pages/Category'
 import Product from './pages/Product'
@@ -19,6 +17,7 @@ import Checkout from './pages/Checkout'
 import ThankYou from './pages/ThankYou'
 import Account from './pages/Account'
 import TrackOrder from './pages/TrackOrder'
+import AdminLogin from './pages/AdminLogin'
 import AdminOrders from './components/admin/AdminOrders'
 import NotFound from './pages/NotFound'
 
@@ -37,16 +36,9 @@ function AnimatedRoutes() {
         <Route path="/account" element={<PageTransition><Account /></PageTransition>} />
         <Route path="/track-order" element={<PageTransition><TrackOrder /></PageTransition>} />
 
-        <Route
-          path="/admin"
-          element={
-            <PageTransition>
-              <AdminGate>
-                <AdminOrders />
-              </AdminGate>
-            </PageTransition>
-          }
-        />
+        <Route path="/admin-login" element={<PageTransition><AdminLogin /></PageTransition>} />
+
+        <Route path="/admin" element={<PageTransition><AdminOrders /></PageTransition>} />
 
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>

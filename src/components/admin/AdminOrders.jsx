@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Trash2 } from 'lucide-react'
 import { API_URL } from '../../lib/api'
 
@@ -24,12 +25,15 @@ const statusStyles = {
 }
 
 export default function AdminOrders() {
+  const navigate = useNavigate()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/orders`)
+      const res = await fetch(`${API_URL}/api/orders`, {
+        credentials: 'include',
+      })
       const data = await res.json()
       setOrders(data.orders || [])
     } catch (error) {
@@ -40,7 +44,24 @@ export default function AdminOrders() {
   }
 
   useEffect(() => {
-    fetchOrders()
+    const checkAuth = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/auth/check`, {
+          credentials: 'include',
+        })
+
+        if (!res.ok) {
+          navigate('/admin-login')
+          return
+        }
+
+        fetchOrders()
+      } catch (error) {
+        navigate('/admin-login')
+      }
+    }
+
+    checkAuth()
   }, [])
 
   const stats = useMemo(() => ({
@@ -56,6 +77,7 @@ export default function AdminOrders() {
     try {
       const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PATCH',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       })
@@ -79,6 +101,7 @@ export default function AdminOrders() {
     try {
       const res = await fetch(`${API_URL}/api/orders/${orderId}`, {
         method: 'DELETE',
+        credentials: 'include',
       })
 
       if (!res.ok) throw new Error('Failed to delete order')
