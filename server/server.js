@@ -8,8 +8,6 @@ const authRoutes = require('./routes/authRoutes')
 const app = express()
 
 app.use(cookieParser())
-const cors = require('cors')
-
 app.use(cors({
   origin: [
     'http://localhost:5173',
