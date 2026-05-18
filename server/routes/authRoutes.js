@@ -6,10 +6,12 @@ const router = express.Router()
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body
+    const trimmedUsername = username?.trim()
+    const trimmedPassword = password?.trim()
 
     if (
-      username !== process.env.ADMIN_USERNAME ||
-      password !== process.env.ADMIN_PASSWORD
+      trimmedUsername !== process.env.ADMIN_USERNAME ||
+      trimmedPassword !== process.env.ADMIN_PASSWORD
     ) {
       return res.status(401).json({
         error: 'Invalid credentials',

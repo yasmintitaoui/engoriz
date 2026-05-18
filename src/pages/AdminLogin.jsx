@@ -24,8 +24,8 @@ export default function AdminLogin() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          username,
-          password,
+          username: username.trim(),
+          password: password.trim(),
         }),
       })
 
