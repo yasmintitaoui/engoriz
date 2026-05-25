@@ -35,7 +35,9 @@ export default function AdminLogin() {
         throw new Error(data.error || 'Login failed')
       }
 
-      navigate('/admin')
+      localStorage.setItem('engoriz-admin-token', data.token)
+
+window.location.href = '/admin'
     } catch (err) {
       setError(err.message)
     } finally {
