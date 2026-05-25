@@ -36,6 +36,7 @@ export default function AdminLogin() {
       }
 
       localStorage.setItem('engoriz-admin-token', data.token)
+      alert('Token saved. Going to admin.')
 
 window.location.href = '/admin'
     } catch (err) {

@@ -41,9 +41,10 @@ export default function AdminOrders() {
     const token = getToken()
 
     if (!token) {
-      navigate('/admin-login')
-      return
-    }
+  setLoading(false)
+  alert('No admin token found on this phone.')
+  return
+}
 
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -53,10 +54,10 @@ export default function AdminOrders() {
       })
 
       if (!res.ok) {
-        localStorage.removeItem('engoriz-admin-token')
-        navigate('/admin-login')
-        return
-      }
+  setLoading(false)
+  alert(`Admin auth failed. Status: ${res.status}`)
+  return
+}
 
       const data = await res.json()
       setOrders(data.orders || [])
@@ -73,9 +74,10 @@ export default function AdminOrders() {
       const token = getToken()
 
       if (!token) {
-        navigate('/admin-login')
-        return
-      }
+  setLoading(false)
+  alert('No admin token found on this phone.')
+  return
+}
 
       try {
         const res = await fetch(`${API_URL}/api/auth/check`, {
@@ -85,10 +87,10 @@ export default function AdminOrders() {
         })
 
         if (!res.ok) {
-          localStorage.removeItem('engoriz-admin-token')
-          navigate('/admin-login')
-          return
-        }
+  setLoading(false)
+  alert(`Admin auth failed. Status: ${res.status}`)
+  return
+}
 
         fetchOrders()
       } catch (error) {
