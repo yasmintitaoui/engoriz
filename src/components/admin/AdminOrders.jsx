@@ -4,15 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Trash2 } from 'lucide-react'
 import { API_URL } from '../../lib/api'
 
-const statuses = [
-  'received',
-  'confirmed',
-  'production',
-  'ready',
-  'shipped',
-  'delivered',
-  'cancelled',
-]
+const statuses = ['received', 'confirmed', 'production', 'ready', 'shipped', 'delivered', 'cancelled']
 
 const statusStyles = {
   received: 'bg-neutral-100 text-neutral-700',
@@ -25,20 +17,52 @@ const statusStyles = {
   new: 'bg-neutral-100 text-neutral-700',
 }
 
+function getToken() {
+  return localStorage.getItem('engoriz-admin-token')
+}
+
+function getItemImage(item) {
+  const product = products.find((p) => p.slug === item.slug || p.id === item.id)
+
+  return (
+    product?.imagesByColor?.[item.color]?.front ||
+    product?.images?.front ||
+    item.image ||
+    '/favicon.ico'
+  )
+}
+
 export default function AdminOrders() {
   const navigate = useNavigate()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
 
   const fetchOrders = async () => {
+    const token = getToken()
+
+    if (!token) {
+      navigate('/admin-login')
+      return
+    }
+
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
+
+      if (!res.ok) {
+        localStorage.removeItem('engoriz-admin-token')
+        navigate('/admin-login')
+        return
+      }
+
       const data = await res.json()
       setOrders(data.orders || [])
     } catch (error) {
       console.error(error)
+      navigate('/admin-login')
     } finally {
       setLoading(false)
     }
@@ -46,24 +70,35 @@ export default function AdminOrders() {
 
   useEffect(() => {
     const checkAuth = async () => {
+      const token = getToken()
+
+      if (!token) {
+        navigate('/admin-login')
+        return
+      }
+
       try {
         const res = await fetch(`${API_URL}/api/auth/check`, {
-          credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
 
         if (!res.ok) {
+          localStorage.removeItem('engoriz-admin-token')
           navigate('/admin-login')
           return
         }
 
         fetchOrders()
       } catch (error) {
+        console.error(error)
         navigate('/admin-login')
       }
     }
 
     checkAuth()
-  }, [])
+  }, [navigate])
 
   const stats = useMemo(() => ({
     total: orders.length,
@@ -75,11 +110,15 @@ export default function AdminOrders() {
   }), [orders])
 
   const updateStatus = async (orderId, status) => {
+    const token = getToken()
+
     try {
       const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PATCH',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ status }),
       })
 
@@ -99,10 +138,14 @@ export default function AdminOrders() {
   const deleteOrder = async (orderId) => {
     if (!window.confirm('Delete this order?')) return
 
+    const token = getToken()
+
     try {
       const res = await fetch(`${API_URL}/api/orders/${orderId}`, {
         method: 'DELETE',
-        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
       if (!res.ok) throw new Error('Failed to delete order')
@@ -114,17 +157,9 @@ export default function AdminOrders() {
     }
   }
 
-  const handleLogout = async () => {
-    try {
-      await fetch(`${API_URL}/api/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      navigate('/admin-login')
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('engoriz-admin-token')
+    navigate('/admin-login')
   }
 
   return (
@@ -232,47 +267,34 @@ export default function AdminOrders() {
                       </p>
 
                       <div className="mt-4 space-y-4">
-                        {order.items?.map((item, index) => {
-                          const itemImage =
-                            typeof item.image === 'string'
-                              ? item.image
-                              : item.image?.src || ''
-
-                          return (
-                            <div key={index} className="flex gap-4">
-                              <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
-                                <img
-  src={
-    products.find((p) => p.slug === item.slug || p.id === item.id)
-      ?.imagesByColor?.[item.color]?.front ||
-    products.find((p) => p.slug === item.slug || p.id === item.id)
-      ?.images?.front ||
-    item.image
-  }
-  alt={item.name}
-  loading="lazy"
-  decoding="async"
-  className="h-full w-full object-contain p-1"
-/>
-                              </div>
-
-                              <div>
-                                <p className="text-sm font-semibold uppercase">
-                                  {item.name}
-                                </p>
-
-                                <p className="mt-1 text-sm text-neutral-500">
-                                  {item.color || 'Black'} · {item.fit || 'Regular'} · Size{' '}
-                                  {item.size} · Qty {item.quantity}
-                                </p>
-
-                                <p className="mt-1 text-sm">
-                                  MAD {(item.price * item.quantity).toLocaleString()}.00
-                                </p>
-                              </div>
+                        {order.items?.map((item, index) => (
+                          <div key={index} className="flex gap-4">
+                            <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-neutral-100">
+                              <img
+                                src={getItemImage(item)}
+                                alt={item.name}
+                                loading="lazy"
+                                decoding="async"
+                                className="h-full w-full object-contain p-1"
+                              />
                             </div>
-                          )
-                        })}
+
+                            <div>
+                              <p className="text-sm font-semibold uppercase">
+                                {item.name}
+                              </p>
+
+                              <p className="mt-1 text-sm text-neutral-500">
+                                {item.color || 'Black'} · {item.fit || 'Regular'} · Size{' '}
+                                {item.size} · Qty {item.quantity}
+                              </p>
+
+                              <p className="mt-1 text-sm">
+                                MAD {(item.price * item.quantity).toLocaleString()}.00
+                              </p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -284,17 +306,13 @@ export default function AdminOrders() {
                       <div className="mt-4 space-y-2 text-sm text-neutral-600">
                         <p>{order.customer?.address}</p>
 
-                        {order.customer?.apartment && (
-                          <p>{order.customer.apartment}</p>
-                        )}
+                        {order.customer?.apartment && <p>{order.customer.apartment}</p>}
 
                         {order.customer?.postalCode && (
                           <p>Postal code: {order.customer.postalCode}</p>
                         )}
 
-                        {order.customer?.note && (
-                          <p>Note: {order.customer.note}</p>
-                        )}
+                        {order.customer?.note && <p>Note: {order.customer.note}</p>}
 
                         <p>{new Date(order.createdAt).toLocaleString()}</p>
                       </div>
