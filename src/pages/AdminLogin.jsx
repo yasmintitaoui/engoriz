@@ -1,10 +1,7 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../lib/api'
 
 export default function AdminLogin() {
-  const navigate = useNavigate()
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -22,7 +19,6 @@ export default function AdminLogin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
           username: username.trim(),
           password: password.trim(),
@@ -35,10 +31,13 @@ export default function AdminLogin() {
         throw new Error(data.error || 'Login failed')
       }
 
-      localStorage.setItem('engoriz-admin-token', data.token)
-      alert('Token saved. Going to admin.')
+      if (!data.token) {
+        throw new Error('No token returned from server')
+      }
 
-window.location.href = '/admin'
+      localStorage.setItem('engoriz-admin-token', data.token)
+
+      window.location.href = '/admin'
     } catch (err) {
       setError(err.message)
     } finally {
@@ -52,9 +51,7 @@ window.location.href = '/admin'
         onSubmit={handleSubmit}
         className="w-full max-w-md rounded-3xl border border-neutral-200 p-8"
       >
-        <h1 className="text-3xl font-black uppercase">
-          Admin Login
-        </h1>
+        <h1 className="text-3xl font-black uppercase">Admin Login</h1>
 
         <div className="mt-8 space-y-5">
           <input
@@ -73,11 +70,7 @@ window.location.href = '/admin'
             className="h-14 w-full rounded-xl border border-neutral-300 px-4 outline-none"
           />
 
-          {error && (
-            <p className="text-sm text-red-500">
-              {error}
-            </p>
-          )}
+          {error && <p className="text-sm text-red-500">{error}</p>}
 
           <button
             type="submit"
