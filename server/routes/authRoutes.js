@@ -6,78 +6,42 @@ const router = express.Router()
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body
-    const trimmedUsername = username?.trim()
-    const trimmedPassword = password?.trim()
 
     if (
-      trimmedUsername !== process.env.ADMIN_USERNAME ||
-      trimmedPassword !== process.env.ADMIN_PASSWORD
+      username?.trim() !== process.env.ADMIN_USERNAME ||
+      password?.trim() !== process.env.ADMIN_PASSWORD
     ) {
-      return res.status(401).json({
-        error: 'Invalid credentials',
-      })
+      return res.status(401).json({ error: 'Invalid credentials' })
     }
 
     const token = jwt.sign(
-      {
-        role: 'admin',
-      },
+      { role: 'admin' },
       process.env.JWT_SECRET,
-      {
-        expiresIn: '7d',
-      }
+      { expiresIn: '7d' }
     )
 
-    res.cookie('admin_token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
-
-    res.json({
+    return res.json({
       success: true,
+      token,
     })
   } catch (error) {
     console.error(error)
-
-    res.status(500).json({
-      error: 'Server error',
-    })
+    return res.status(500).json({ error: 'Server error' })
   }
 })
 
-router.post('/logout', (req, res) => {
-  res.clearCookie('admin_token', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-  })
-
-  res.json({
-    success: true,
-  })
-})
-
 router.get('/check', (req, res) => {
-  const token = req.cookies.admin_token
+  const token = req.headers.authorization?.replace('Bearer ', '')
 
   if (!token) {
-    return res.status(401).json({
-      authenticated: false,
-    })
+    return res.status(401).json({ authenticated: false })
   }
 
   try {
     jwt.verify(token, process.env.JWT_SECRET)
-
-    return res.json({
-      authenticated: true,
-    })
+    return res.json({ authenticated: true })
   } catch {
-    return res.status(401).json({
-      authenticated: false,
-    })
+    return res.status(401).json({ authenticated: false })
   }
 })
 
