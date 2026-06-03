@@ -2,7 +2,11 @@ import ProductCard from './ProductCard'
 import products from '../../data/products'
 
 export default function BestSellers() {
-  const bestSellers = products.filter((product) => product.bestseller).slice(0, 4)
+  const order = ['njr', 'gtd', 'tysonism', 'love-pain']
+
+  const bestSellers = order
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter(Boolean)
 
   if (bestSellers.length === 0) return null
 
@@ -11,11 +15,11 @@ export default function BestSellers() {
       <div className="mb-10 flex items-end justify-between">
         <div>
           <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
-            Most Wanted
+            Best Sellers
           </p>
 
           <h2 className="mt-4 font-display text-6xl uppercase md:text-8xl">
-            Best Sellers
+            BEST SELLERS
           </h2>
         </div>
       </div>

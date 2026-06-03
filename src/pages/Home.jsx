@@ -6,8 +6,9 @@ import lovePainHero from '../assets/campaign/love-pain-hero.webp'
 import lovePainHeroMobile from '../assets/campaign/love-pain-hero-mobile.webp'
 import editorial01 from '../assets/campaign/editorial-01.webp'
 
-import ProductGrid from '../components/product/ProductGrid'
+import ProductCard from '../components/product/ProductCard'
 import BestSellers from '../components/product/BestSellers'
+import products from '../data/products'
 
 const reveal = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -104,9 +105,54 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <ProductGrid />
+      {/* NEW DROP: IDOLS & INK */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
+              New Drop
+            </p>
+
+            <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
+              IDOLS &amp; INK
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
+          {['ice-man', 'njr', 'lamarism', 'drake-the-punk']
+            .map((slug) => products.find((p) => p.slug === slug))
+            .filter(Boolean)
+            .map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      </section>
 
       <BestSellers />
+
+      {/* FULL COLLECTION: SS26 DROP */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
+              Full Collection
+            </p>
+
+            <h2 className="mt-4 font-display text-6xl uppercase md:text-8xl">
+              SS26 DROP
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
+          {products
+            .filter((p) => p.collection === 'SS26 DROP 01')
+            .map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 md:pb-32">
         <div className="grid overflow-hidden md:grid-cols-2">

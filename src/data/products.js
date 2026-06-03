@@ -42,6 +42,12 @@ import lamarismBack from '../assets/products/tees/lamarism/back.webp'
 import njrFront from '../assets/products/tees/njr/front.webp'
 import njrBack from '../assets/products/tees/njr/back.webp'
 
+import icemanBlackFront from '../assets/products/tees/ice-man/iceman-black-front.webp'
+import icemanBlackBack from '../assets/products/tees/ice-man/iceman-black-back.webp'
+import icemanWhiteFront from '../assets/products/tees/ice-man/iceman-white-front.webp'
+import icemanWhiteBack from '../assets/products/tees/ice-man/iceman-white-back.webp'
+
+
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']
 
@@ -58,8 +64,7 @@ const products = [
     slug: 'love-pain',
     price: 249,
     compareAt: 300,
-    collection: 'SS26 DROP 02',
-    dropName: 'LOVE PAIN CAPSULE',
+      collection: 'SS26 DROP 01',
     featured: true,
     bestseller: true,
     newArrival: true,
@@ -87,8 +92,7 @@ const products = [
     slug: 'love-pain-v2',
     price: 229,
     compareAt: 249,
-    collection: 'SS26 DROP 02',
-    dropName: 'LOVE PAIN CAPSULE',
+      collection: 'SS26 DROP 01',
     featured: true,
     bestseller: true,
     newArrival: true,
@@ -330,6 +334,7 @@ const products = [
     price: 249,
     compareAt: 300,
     collection: 'SS26 DROP 01',
+    dropName: 'LOVE PAIN CAPSULE',
     featured: true,
     newArrival: true,
     colors: [{ name: 'Black / White', hex: '#FFFFFF' }],
@@ -350,6 +355,7 @@ const products = [
     price: 249,
     compareAt: 300,
     collection: 'SS26 DROP 01',
+    dropName: 'LOVE PAIN CAPSULE',
     featured: true,
     newArrival: true,
     colors: [{ name: 'Black / White', hex: '#FFFFFF' }],
@@ -370,6 +376,7 @@ const products = [
     price: 249,
     compareAt: 300,
     collection: 'SS26 DROP 01',
+    dropName: 'LOVE PAIN CAPSULE',
     featured: true,
     newArrival: true,
     colors: [{ name: 'Black / White', hex: '#111111' }],
@@ -382,6 +389,40 @@ const products = [
       back: njrBack,
     },
   },
+
+  {
+  id: 16,
+  name: 'ICE MAN DRAKE TEE',
+  slug: 'ice-man',
+  price: 249,
+  compareAt: 300,
+  collection: 'SS26 DROP 01',
+  dropName: 'LOVE PAIN CAPSULE',
+  featured: true,
+  newArrival: true,
+  colors: [
+    { name: 'Black', hex: '#111111' },
+    { name: 'White', hex: '#fafafa' },
+  ],
+  sizes: commonSizes,
+  fits: commonFits,
+  description: 'Ice Man Drake inspired oversized tee. Made by demand after order confirmation.',
+  details: commonDetails,
+  images: {
+    front: icemanBlackFront,
+    back: icemanBlackBack,
+  },
+  imagesByColor: {
+    Black: {
+      front: icemanBlackFront,
+      back: icemanBlackBack,
+    },
+    White: {
+      front: icemanWhiteFront,
+      back: icemanWhiteBack,
+    },
+  },
+}
 ]
 
 export default products
