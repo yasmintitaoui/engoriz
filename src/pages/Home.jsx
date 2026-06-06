@@ -120,7 +120,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-          {['ice-man', 'njr', 'lamarism', 'drake-the-punk']
+          {['ice-man', 'njr', 'lamarism', 'drake-the-punk', '2pac']
             .map((slug) => products.find((p) => p.slug === slug))
             .filter(Boolean)
             .map((product) => (

@@ -2,7 +2,7 @@ import ProductCard from './ProductCard'
 import products from '../../data/products'
 
 export default function BestSellers() {
-  const order = ['njr', 'gtd', 'tysonism', 'love-pain']
+  const order = ['njr', 'gtd', 'tysonism', 'love-pain-v2', 'rude-man']
 
   const bestSellers = order
     .map((slug) => products.find((p) => p.slug === slug))

@@ -135,6 +135,26 @@ export default function ThankYou() {
           </div>
         </section>
 
+        <section className="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
+          <div>
+            <h3 className="text-sm font-black uppercase tracking-[0.22em]">
+              What's Next?
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-neutral-600">
+              Our team will reach out to confirm your order via WhatsApp or phone call. Please keep your phone ready for a message or call within the next 24 hours.
+            </p>
+          </div>
+
+          <div className="border-t border-neutral-200 pt-5">
+            <h3 className="text-sm font-black uppercase tracking-[0.22em] text-red-600">
+              Important: No Refunds
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-neutral-600">
+              Please review your order carefully. ENGORIZ does not offer refunds. Orders are made by demand and customized to your specifications.
+            </p>
+          </div>
+        </section>
+
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
           <Link
             to="/track-order"

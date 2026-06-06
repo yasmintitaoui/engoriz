@@ -47,6 +47,8 @@ import icemanBlackBack from '../assets/products/tees/ice-man/iceman-black-back.w
 import icemanWhiteFront from '../assets/products/tees/ice-man/iceman-white-front.webp'
 import icemanWhiteBack from '../assets/products/tees/ice-man/iceman-white-back.webp'
 
+import tupacFront from '../assets/products/tees/2pac/front.png'
+import tupacBack from '../assets/products/tees/2pac/back.png'
 
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']
@@ -66,7 +68,6 @@ const products = [
     compareAt: 300,
       collection: 'SS26 DROP 01',
     featured: true,
-    bestseller: true,
     newArrival: true,
     colors: [
       { name: 'Black / Red', hex: '#111111', accent: '#8b1111' },
@@ -277,6 +278,7 @@ const products = [
     compareAt: 249,
     collection: 'SS26 DROP 01',
     featured: true,
+    bestseller: true,
     colors: [{ name: 'Black / White', hex: '#111111' }],
     sizes: commonSizes,
     fits: commonFits,
@@ -422,7 +424,28 @@ const products = [
       back: icemanWhiteBack,
     },
   },
-}
+},
+
+  {
+    id: 17,
+    name: '2PAC TRIBUTE TEE',
+    slug: '2pac',
+    price: 249,
+    compareAt: 300,
+    collection: 'SS26 DROP 01',
+    dropName: 'LOVE PAIN CAPSULE',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'Black / White', hex: '#111111' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: '2Pac tribute graphic tee. Made by demand after order confirmation.',
+    details: commonDetails,
+    images: {
+      front: tupacFront,
+      back: tupacBack,
+    },
+  },
 ]
 
 export default products
