@@ -91,6 +91,23 @@ export const translations = {
       total: 'Total',
       track: 'Track My Order',
       continue: 'Continue Shopping',
+      orderProgressTitle: 'Order Progress',
+      progressReceived: 'Received',
+      progressConfirmed: 'Confirmed',
+      progressProduction: 'Production',
+      progressShipped: 'Shipped',
+      progressDelivered: 'Delivered',
+      whatsNextTitle: "What's Next?",
+      whatsNextText:
+        'Our team will contact you via phone call or message to confirm your order and delivery details. Please keep your phone nearby and make sure your number is correct.',
+      confirmTimeText: 'We usually confirm orders within 1–24 hours.',
+      orderIdLabel: 'Order ID',
+      copy: 'Copy',
+      copied: 'Copied',
+      followInstagram: 'Follow @engoriz.co',
+      noRefundTitle: 'Important: No Refunds',
+      noRefundText:
+        'Please review your order carefully. ENGORIZ does not offer refunds. Orders are produced by demand and prepared specifically for each order.',
     },
 
     footer: {
@@ -210,6 +227,23 @@ export const translations = {
       total: 'Total',
       track: 'Suivre ma commande',
       continue: 'Continuer les achats',
+      orderProgressTitle: 'Progression de la commande',
+      progressReceived: 'Reçue',
+      progressConfirmed: 'Confirmée',
+      progressProduction: 'En préparation',
+      progressShipped: 'Expédiée',
+      progressDelivered: 'Livrée',
+      whatsNextTitle: "Et ensuite ?",
+      whatsNextText:
+        "Notre équipe vous contactera par appel ou message pour confirmer votre commande et les détails de livraison. Veuillez garder votre téléphone à portée de main et vérifier que votre numéro est correct.",
+      confirmTimeText: 'Nous confirmons généralement les commandes sous 1 à 24 heures.',
+      orderIdLabel: 'Numéro de commande',
+      copy: 'Copier',
+      copied: 'Copié',
+      followInstagram: 'Suivre @engoriz.co',
+      noRefundTitle: 'Important : Pas de remboursement',
+      noRefundText:
+        "Veuillez vérifier votre commande attentivement. ENGORIZ n'offre pas de remboursements. Les commandes sont produites sur demande et préparées spécifiquement.",
     },
 
     footer: {

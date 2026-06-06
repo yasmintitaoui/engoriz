@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { Check } from 'lucide-react'
+import { Check, Clipboard } from 'lucide-react'
 import { useCartStore } from '../store/cartStore'
 import { useTranslation } from '../i18n/useTranslation'
 
@@ -8,6 +8,7 @@ export default function ThankYou() {
   const { t } = useTranslation()
 
   const [order, setOrder] = useState(null)
+  const [copied, setCopied] = useState(false)
 
   const clearCart = useCartStore((state) => state.clearCart)
 
@@ -135,22 +136,107 @@ export default function ThankYou() {
           </div>
         </section>
 
+        <section className="mt-10 rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
+          <h3 className="text-sm font-black uppercase tracking-[0.22em]">
+            {t('thankYou.orderProgressTitle')}
+          </h3>
+
+          <div className="mt-8">
+            <div className="relative flex items-center justify-between">
+              <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-neutral-300" />
+
+              {(() => {
+                const steps = ['received', 'confirmed', 'production', 'shipped', 'delivered']
+                const status = order.status === 'new' ? 'received' : order.status || 'received'
+                const activeIndex = Math.max(0, steps.indexOf(status))
+
+                return steps.map((s, i) => (
+                  <div
+                    key={s}
+                    className={`relative z-10 h-4 w-4 rounded-full ${
+                      i <= activeIndex ? 'bg-black' : 'bg-neutral-300'
+                    }`}
+                  />
+                ))
+              })()}
+            </div>
+
+            <div className="mt-4 grid grid-cols-5 gap-2 text-center">
+              {[t('thankYou.progressReceived'), t('thankYou.progressConfirmed'), t('thankYou.progressProduction'), t('thankYou.progressShipped'), t('thankYou.progressDelivered')].map((label, i) => (
+                <div key={label}>
+                  <p className={`text-[10px] uppercase tracking-wider ${i <= (order.status === 'new' ? 0 : ['received','confirmed','production','shipped','delivered'].indexOf(order.status || 'received')) ? 'font-semibold text-black' : 'text-neutral-500'}`}>
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         <section className="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
           <div>
             <h3 className="text-sm font-black uppercase tracking-[0.22em]">
-              What's Next?
+              {t('thankYou.whatsNextTitle')}
             </h3>
+
             <p className="mt-3 text-sm leading-7 text-neutral-600">
-              Our team will reach out to confirm your order via WhatsApp or phone call. Please keep your phone ready for a message or call within the next 24 hours.
+              {t('thankYou.whatsNextText')}
+            </p>
+
+            <p className="mt-3 text-sm font-medium text-black">
+              {t('thankYou.confirmTimeText')}
             </p>
           </div>
 
+          <div className="rounded-xl border border-neutral-200 bg-white p-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+              {t('thankYou.orderIdLabel')}
+            </p>
+
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <span className="font-semibold">#{order.orderId || order.id || 'ENGORIZ'}</span>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(order.orderId || order.id || 'ENGORIZ')
+                    setCopied(true)
+                    setTimeout(() => setCopied(false), 2000)
+                  } catch (e) {
+                    console.error(e)
+                  }
+                }}
+                className="rounded-full border border-black px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] flex items-center gap-2"
+              >
+                {copied ? (
+                  <>
+                    <Check size={14} /> {t('thankYou.copied')}
+                  </>
+                ) : (
+                  <>
+                    <Clipboard size={14} /> {t('thankYou.copy')}
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <a
+            href="https://www.instagram.com/engoriz.co/"
+            target="_blank"
+            rel="noreferrer"
+            className="flex h-14 items-center justify-center rounded-full border border-black bg-white text-[11px] font-semibold uppercase tracking-[0.25em] text-black transition hover:bg-neutral-100"
+          >
+            {t('thankYou.followInstagram')}
+          </a>
+
           <div className="border-t border-neutral-200 pt-5">
             <h3 className="text-sm font-black uppercase tracking-[0.22em] text-red-600">
-              Important: No Refunds
+              {t('thankYou.noRefundTitle')}
             </h3>
+
             <p className="mt-3 text-sm leading-7 text-neutral-600">
-              Please review your order carefully. ENGORIZ does not offer refunds. Orders are made by demand and customized to your specifications.
+              {t('thankYou.noRefundText')}
             </p>
           </div>
         </section>
