@@ -50,6 +50,10 @@ import icemanWhiteBack from '../assets/products/tees/ice-man/iceman-white-back.w
 import tupacFront from '../assets/products/tees/2pac/front.png'
 import tupacBack from '../assets/products/tees/2pac/back.png'
 
+import rioGoldImage from '../assets/products/tees/rio-summer-club/rio-gold.jpeg'
+import cidadeImage from '../assets/products/tees/rio-summer-club/cidade.PNG'
+import rioDeJaneiroImage from '../assets/products/tees/rio-summer-club/rio-de-janeiro.PNG'
+
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']
 
@@ -444,6 +448,66 @@ const products = [
     images: {
       front: tupacFront,
       back: tupacBack,
+    },
+  },
+
+  {
+    id: 18,
+    name: 'RIO GOLD FOR GOLD',
+    slug: 'rio-gold',
+    price: 249,
+    compareAt: 300,
+    collection: 'RIO SUMMER CLUB',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'Black', hex: '#111111' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'Rio Gold graphic tee from the new Rio Summer Club drop.',
+    details: commonDetails,
+    images: {
+      front: rioGoldImage,
+      back: rioGoldImage,
+    },
+  },
+
+  {
+    id: 19,
+    name: 'CIDADE MARAVILHOSA OVERSIZED CROPPED TEE',
+    slug: 'cidade',
+    price: 249,
+    compareAt: 300,
+    collection: 'RIO SUMMER CLUB',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'White', hex: '#fafafa' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'Cidade graphic tee from the new Rio Summer Club drop.',
+    details: commonDetails,
+    images: {
+      front: cidadeImage,
+      back: cidadeImage,
+    },
+  },
+
+  {
+    id: 20,
+    name: 'RIO SUMMER CLUB',
+    slug: 'rio-de-janeiro',
+    price: 249,
+    compareAt: 300,
+    collection: 'RIO SUMMER CLUB',
+    featured: true,
+    newArrival: true,
+    colors: [{ name: 'White', hex: '#fafafa' }],
+    sizes: commonSizes,
+    fits: commonFits,
+    description: 'Rio de Janeiro graphic tee from the new Rio Summer Club drop.',
+    details: commonDetails,
+    images: {
+      front: rioDeJaneiroImage,
+      back: rioDeJaneiroImage,
     },
   },
 ]

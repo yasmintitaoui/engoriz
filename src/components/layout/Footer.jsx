@@ -34,10 +34,10 @@ export default function Footer() {
           <div className="mt-5 flex flex-col gap-3 text-sm text-neutral-500">
 
             <Link
-              to="/shop#love-pain"
+              to="/shop#rio-summer-club"
               className="hover:text-black transition"
             >
-              Love Pain Capsule
+              RIO SUMMER CLUB
             </Link>
 
             <Link

@@ -7,7 +7,7 @@ export const translations = {
       search: 'Search',
       menu: 'Menu',
       trackOrder: 'Track Order',
-      lovePainCapsule: 'Love Pain Capsule',
+      lovePainCapsule: 'RIO SUMMER CLUB',
       ss26Drop01: 'SS26 Drop 01',
     },
 
@@ -18,12 +18,12 @@ export const translations = {
 
     home: {
       newDrop: 'New Drop',
-      heroTitle: 'LOVE PAIN\nDROP — SS26\nOUT NOW',
-      heroText: 'A capsule born from pressure. Made by demand.',
-      shopDrop: 'Shop Drop',
+      heroTitle: 'RIO SUMMER CLUB\nNEW DROP\nNOW AVAILABLE',
+      heroText: 'New summer graphics, oversized cuts, and city energy.',
+      shopDrop: 'Shop New Drop',
       viewAll: 'View All',
       marquee:
-        'LOVE PAIN DROP · SS26 · MADE BY DEMAND · CASH ON DELIVERY · MOROCCO',
+        'SHOP NEW SUMMER BEACH CLUB DROP · MADE BY DEMAND · CASH ON DELIVERY',
       editorial: 'Editorial',
       builtWith: 'Built With\nAttitude.',
       editorialText:
@@ -143,7 +143,7 @@ export const translations = {
       search: 'Recherche',
       menu: 'Menu',
       trackOrder: 'Suivre commande',
-      lovePainCapsule: 'Capsule Love Pain',
+      lovePainCapsule: 'RIO SUMMER CLUB',
       ss26Drop01: 'SS26 Drop 01',
     },
 
@@ -154,12 +154,12 @@ export const translations = {
 
     home: {
       newDrop: 'Nouveau Drop',
-      heroTitle: 'LOVE PAIN\nDROP — SS26\nDISPONIBLE',
-      heroText: 'Une capsule née sous pression. Produite à la demande.',
-      shopDrop: 'Acheter le Drop',
+      heroTitle: 'RIO SUMMER CLUB\nNOUVEAU DROP\nDISPONIBLE',
+      heroText: 'Nouveaux graphismes d’été, coupes oversize et énergie de ville.',
+      shopDrop: 'Acheter le nouveau drop Summer Beach Club',
       viewAll: 'Voir Tout',
       marquee:
-        'LOVE PAIN DROP · SS26 · PRODUIT À LA DEMANDE · PAIEMENT À LA LIVRAISON · MAROC',
+        'ACHETEZ LE NOUVEAU DROP SUMMER BEACH CLUB · PRODUIT À LA DEMANDE · PAIEMENT À LA LIVRAISON',
       editorial: 'Éditorial',
       builtWith: 'Construit Avec\nAttitude.',
       editorialText:

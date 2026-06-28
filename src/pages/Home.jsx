@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from '../i18n/useTranslation'
 
-import lovePainHero from '../assets/campaign/love-pain-hero.webp'
-import lovePainHeroMobile from '../assets/campaign/love-pain-hero-mobile.webp'
+import rioHero from '../assets/campaign/rio-hero.jpeg'
 import editorial01 from '../assets/campaign/editorial-01.webp'
 
 import ProductCard from '../components/product/ProductCard'
@@ -25,25 +24,22 @@ export default function Home() {
 
   return (
     <main className="bg-white">
-      <section className="relative min-h-[92svh] overflow-hidden bg-black text-white md:h-[100svh]">
-        <picture className="absolute inset-0 block h-full w-full overflow-hidden">
-          <source media="(min-width: 768px)" srcSet={lovePainHero} />
+      <section className="grid min-h-[92svh] grid-cols-1 md:grid-cols-2">
+        <div className="relative overflow-hidden bg-black">
           <img
-            src={lovePainHeroMobile}
-            alt="Love Pain Campaign"
+            src={rioHero}
+            alt="Rio Summer Club hero"
             loading="eager"
             decoding="async"
-            className="absolute inset-0 block h-full w-full scale-[1.12] object-cover object-[center_30%]"
+            className="h-full w-full object-cover"
           />
-        </picture>
+        </div>
 
-        <div className="absolute inset-0 bg-black/10 md:bg-black/15" />
-
-        <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-7xl items-start justify-start px-6 pt-20 md:h-full md:items-start md:justify-end md:px-12 md:pt-36">
-          <div className="max-w-[330px] text-left md:max-w-xl">
+        <div className="flex items-center bg-white px-6 py-20 text-black md:px-12">
+          <div className="w-full max-w-xl">
             <motion.p
               {...reveal(0.08)}
-              className="text-[10px] uppercase tracking-[0.45em] text-white/70"
+              className="text-[10px] uppercase tracking-[0.45em] text-neutral-500"
             >
               {t('home.newDrop')}
             </motion.p>
@@ -52,18 +48,18 @@ export default function Home() {
               {...reveal(0.18)}
               className="mt-5 font-display text-[clamp(2.4rem,11vw,3.8rem)] uppercase leading-[0.86] tracking-[-0.03em] md:text-[clamp(2.8rem,6vw,5.8rem)]"
             >
-              LOVE PAIN
+              RIO SUMMER CLUB
               <br />
-              DROP — SS26
+              NEW DROP
               <br />
-              OUT NOW
+              NOW AVAILABLE
             </motion.h1>
 
             <motion.p
               {...reveal(0.28)}
-              className="mt-6 max-w-xs text-[11px] uppercase leading-6 tracking-[0.22em] text-white/75 md:max-w-sm md:text-[12px]"
+              className="mt-6 max-w-xs text-[11px] uppercase leading-6 tracking-[0.22em] text-neutral-600 md:max-w-sm md:text-[12px]"
             >
-              A capsule born from pressure. Made by demand.
+              New summer graphics, oversized cuts, and city energy.
             </motion.p>
 
             <motion.div
@@ -71,15 +67,15 @@ export default function Home() {
               className="mt-8 flex flex-wrap gap-3 md:gap-4"
             >
               <Link
-                to="/shop#love-pain"
-                className="rounded-full bg-white px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.25em] !text-black transition hover:opacity-90 md:px-7 md:text-[11px]"
+                to="/shop#rio-summer-club"
+                className="rounded-full bg-black px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.25em] text-white! transition hover:text-white hover:opacity-90 md:px-7 md:text-[11px]"
               >
                 {t('home.shopDrop')}
               </Link>
 
               <Link
                 to="/shop"
-                className="rounded-full border border-white px-6 py-4 text-[10px] uppercase tracking-[0.25em] transition hover:bg-white hover:text-black md:px-7 md:text-[11px]"
+                className="rounded-full border border-black bg-white px-6 py-4 text-[10px] uppercase tracking-[0.25em] text-black transition hover:bg-black hover:text-white md:px-7 md:text-[11px]"
               >
                 {t('home.viewAll')}
               </Link>
@@ -105,7 +101,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* NEW DROP: IDOLS & INK */}
+      {/* NEW DROP: RIO SUMMER CLUB */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
         <div className="mb-10 flex items-end justify-between">
           <div>
@@ -114,13 +110,13 @@ export default function Home() {
             </p>
 
             <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
-              IDOLS &amp; INK
+              RIO SUMMER CLUB
             </h2>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-          {['ice-man', 'njr', 'lamarism', 'drake-the-punk', '2pac']
+          {['rio-gold', 'cidade', 'rio-de-janeiro']
             .map((slug) => products.find((p) => p.slug === slug))
             .filter(Boolean)
             .map((product) => (

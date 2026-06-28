@@ -183,7 +183,7 @@ export default function Navbar() {
                 </Link>
 
                 <Link
-                  to="/shop#love-pain"
+                  to="/shop#rio-summer-club"
                   onClick={closeMenu}
                   className="text-sm uppercase tracking-[0.28em] text-neutral-500 hover:text-black"
                 >

@@ -4,7 +4,7 @@ import products from '../../data/products'
 
 export default function ProductGrid() {
   const newDropProducts = products
-    .filter((product) => product.dropName === 'LOVE PAIN CAPSULE')
+    .filter((product) => product.collection === 'RIO SUMMER CLUB')
     .slice(0, 4)
 
   if (newDropProducts.length === 0) return null
@@ -18,12 +18,12 @@ export default function ProductGrid() {
           </p>
 
           <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
-            Love Pain Capsule
+            RIO SUMMER CLUB
           </h2>
         </div>
 
         <Link
-          to="/shop"
+          to="/shop#rio-summer-club"
           className="hidden border-b border-black pb-1 text-[11px] uppercase tracking-[0.28em] transition hover:opacity-50 md:block"
         >
           View All
@@ -37,7 +37,7 @@ export default function ProductGrid() {
       </div>
 
       <Link
-        to="/shop"
+        to="/shop#rio-summer-club"
         className="mt-10 inline-block border-b border-black pb-1 text-[11px] uppercase tracking-[0.28em] transition hover:opacity-50 md:hidden"
       >
         View All

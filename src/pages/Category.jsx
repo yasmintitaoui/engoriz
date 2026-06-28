@@ -42,8 +42,8 @@ export default function Category() {
     [visibleCount]
   )
 
-  const visibleLovePainProducts = useMemo(
-    () => visibleProducts.filter((product) => product.dropName === 'LOVE PAIN CAPSULE'),
+  const visibleRioSummerClubProducts = useMemo(
+    () => visibleProducts.filter((product) => product.collection === 'RIO SUMMER CLUB'),
     [visibleProducts]
   )
 
@@ -78,16 +78,16 @@ export default function Category() {
       </section>
 
       <DropSection
-        id="love-pain"
+        id="rio-summer-club"
         eyebrow="New Drop"
-        title="Love Pain Capsule"
-        description="Two Love Pain silhouettes, multiple colorways, one capsule."
-        items={visibleLovePainProducts}
+        title="RIO SUMMER CLUB"
+        description="The new summer capsule with RIO GOLD FOR GOLD, CIDADE MARAVILHOSA OVERSIZED CROPPED TEE, and the full Rio Summer Club edit."
+        items={visibleRioSummerClubProducts}
       />
 
       <DropSection
         id="ss26-drop-01"
-        eyebrow="Archive Drop"
+        eyebrow="Last Drop"
         title="SS26 Drop 01"
         description="The first ENGORIZ release — raw graphics, oversized fits, limited quantity."
         items={visibleDropOneProducts}
