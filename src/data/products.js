@@ -50,9 +50,9 @@ import icemanWhiteBack from '../assets/products/tees/ice-man/iceman-white-back.w
 import tupacFront from '../assets/products/tees/2pac/front.png'
 import tupacBack from '../assets/products/tees/2pac/back.png'
 
-import rioGoldImage from '../assets/products/tees/rio-summer-club/rio-gold.jpeg'
-import cidadeImage from '../assets/products/tees/rio-summer-club/cidade.PNG'
-import rioDeJaneiroImage from '../assets/products/tees/rio-summer-club/rio-de-janeiro.PNG'
+import rioGoldImage from '../assets/products/tees/rio-summer-club/rio-gold.webp'
+import cidadeImage from '../assets/products/tees/rio-summer-club/cidade.webp'
+import rioDeJaneiroImage from '../assets/products/tees/rio-summer-club/rio-de-janeiro.webp'
 
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']

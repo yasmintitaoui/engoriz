@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from '../i18n/useTranslation'
 
-import rioHero from '../assets/campaign/rio-hero.jpeg'
+import rioHero from '../assets/campaign/rio-hero.webp'
 import editorial01 from '../assets/campaign/editorial-01.webp'
 
 import ProductCard from '../components/product/ProductCard'
