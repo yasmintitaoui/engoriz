@@ -14,12 +14,24 @@ const textareaClass =
   'w-full resize-none rounded-xl border border-neutral-300 bg-white px-4 py-4 text-[15px] outline-none transition placeholder:text-neutral-400 focus:border-black'
 
 function isValidMoroccanPhone(phone) {
-  const clean = phone.replace(/\s/g, '')
+  const clean = String(phone || '').replace(/\s/g, '')
   return /^(0|\+212)(5|6|7)[0-9]{8}$/.test(clean)
 }
 
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim())
+}
+
+async function parseJsonResponse(response) {
+  const text = await response.text()
+
+  if (!text) return {}
+
+  try {
+    return JSON.parse(text)
+  } catch {
+    return { error: 'Unexpected server response.' }
+  }
 }
 
 export default function Checkout() {
@@ -72,6 +84,8 @@ export default function Checkout() {
   }
 
   const validateForm = () => {
+    if (!items.length) return 'Your cart is empty.'
+
     if (!isValidEmail(form.email))
       return 'Please enter a valid email address.'
 
@@ -102,11 +116,14 @@ export default function Checkout() {
     setIsSubmitting(true)
     setError('')
 
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000)
+
     const order = {
       customer: {
         fullName,
         email: form.email.trim(),
-        phone: form.phone.trim(),
+        phone: String(form.phone || '').replace(/\s/g, ''),
         city: form.city,
         address: form.address.trim(),
         apartment: form.apartment.trim(),
@@ -114,10 +131,14 @@ export default function Checkout() {
         note: form.note.trim(),
       },
 
-      items: items.map((item) => ({
-        ...item,
-        fit: item.fit || 'Regular',
-      })),
+      items: items
+        .map((item) => ({
+          ...item,
+          fit: item.fit || 'Regular',
+          quantity: Math.max(1, Number(item.quantity) || 1),
+          price: Number(item.price) || 0,
+        }))
+        .filter((item) => item && item.name && item.price > 0),
 
       subtotal,
       discount,
@@ -128,6 +149,12 @@ export default function Checkout() {
       createdAt: new Date().toISOString(),
     }
 
+    if (!order.items.length) {
+      setError('Your cart is empty or contains invalid items.')
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
@@ -135,30 +162,37 @@ export default function Checkout() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(order),
+        signal: controller.signal,
       })
 
-      const data = await response.json()
+      const data = await parseJsonResponse(response)
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to place order')
       }
 
-      localStorage.setItem(
-        'engoriz-last-order',
-        JSON.stringify({
-          ...order,
-          orderId: data.orderId,
-        })
-      )
+      const lastOrder = {
+        ...order,
+        orderId: data.orderId,
+        status: 'received',
+      }
 
+      localStorage.setItem('engoriz-last-order', JSON.stringify(lastOrder))
+      window.dispatchEvent(new Event('engoriz-order-placed'))
       navigate('/thank-you')
     } catch (err) {
       console.error(err)
 
-      setError(
-        'Something went wrong while placing your order. Please try again.'
-      )
+      const message =
+        err instanceof Error && err.name === 'AbortError'
+          ? 'The order request timed out. Please try again.'
+          : err instanceof Error && err.message
+            ? err.message
+            : 'Something went wrong while placing your order. Please try again.'
+
+      setError(message)
     } finally {
+      clearTimeout(timeoutId)
       setIsSubmitting(false)
     }
   }

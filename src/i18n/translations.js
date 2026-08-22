@@ -23,7 +23,7 @@ export const translations = {
       shopDrop: 'Shop New Drop',
       viewAll: 'View All',
       marquee:
-        'SHOP NEW SUMMER BEACH CLUB DROP · MADE BY DEMAND · CASH ON DELIVERY',
+        'BROKEN BUT BLESSED · LIMITED EDITION · MADE BY DEMAND · CASH ON DELIVERY',
       editorial: 'Editorial',
       builtWith: 'Built With\nAttitude.',
       editorialText:

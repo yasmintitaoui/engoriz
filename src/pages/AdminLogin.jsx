@@ -39,7 +39,15 @@ export default function AdminLogin() {
 
       window.location.href = '/admin'
     } catch (err) {
-      setError(err.message)
+      const message = err instanceof Error && err.message
+        ? err.message
+        : 'Unable to reach the admin server.'
+
+      setError(
+        message === 'Failed to fetch'
+          ? 'Unable to reach the admin server. Check the backend URL and try again.'
+          : message
+      )
     } finally {
       setLoading(false)
     }

@@ -25,8 +25,8 @@ function DropSection({ id, eyebrow, title, description, items }) {
         </div>
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:grid-cols-4">
-          {items.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {items.map((product, index) => (
+            <ProductCard key={product.id} product={product} priority={index < 6} />
           ))}
         </div>
       </div>
@@ -40,6 +40,11 @@ export default function Category() {
   const visibleProducts = useMemo(
     () => products.slice(0, visibleCount),
     [visibleCount]
+  )
+
+  const visibleBrokenButBlessedProducts = useMemo(
+    () => visibleProducts.filter((product) => product.collection === 'BROKEN BUT BLESSED'),
+    [visibleProducts]
   )
 
   const visibleRioSummerClubProducts = useMemo(
@@ -62,26 +67,35 @@ export default function Category() {
     <main className="min-h-screen bg-white">
       <section className="px-6 pt-24 pb-14 md:px-10 md:pt-32 md:pb-20">
         <div className="mx-auto max-w-7xl">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
-            ENGORIZ STORE
+          <p className="text-[10px] uppercase tracking-[0.35em] text-neutral-400">
+            ENGORIZ / COLLECTION 01
           </p>
 
           <h1 className="mt-5 font-display text-[clamp(4rem,10vw,9rem)] uppercase leading-[0.86] tracking-[-0.03em]">
-            Shop
+            BROKEN
+            <br />
+            BUT BLESSED
           </h1>
 
-          <p className="mt-6 max-w-xl text-sm leading-7 text-neutral-500">
-            Explore the latest ENGORIZ drops. Graphic oversized tees, limited
-            releases, cash on delivery across Morocco.
+          <p className="mt-4 text-[10px] uppercase tracking-[0.3em] text-neutral-500">
+            2026
           </p>
         </div>
       </section>
 
       <DropSection
+        id="broken-but-blessed"
+        eyebrow="Limited Drop"
+        title="BROKEN BUT BLESSED"
+        description="The current limited capsule with soft tones and a louder point of view."
+        items={visibleBrokenButBlessedProducts}
+      />
+
+      <DropSection
         id="rio-summer-club"
-        eyebrow="New Drop"
+        eyebrow="Archive"
         title="RIO SUMMER CLUB"
-        description="The new summer capsule with RIO GOLD FOR GOLD, CIDADE MARAVILHOSA OVERSIZED CROPPED TEE, and the full Rio Summer Club edit."
+        description="The Rio Summer Club collection, kept as part of the archive rather than marked as the latest drop."
         items={visibleRioSummerClubProducts}
       />
 

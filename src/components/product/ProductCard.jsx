@@ -6,7 +6,7 @@ import { useCartStore } from '../../store/cartStore'
 const PLACEHOLDER =
   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200"><rect width="900" height="1200" fill="%23ffffff"/><text x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="22" fill="%23999999" letter-spacing="8">ENGORIZ</text></svg>'
 
-function ProductCard({ product }) {
+function ProductCard({ product, priority = false }) {
   const addItem = useCartStore((state) => state.addItem)
 
   const defaultColor = product.colors?.[0]?.name || null
@@ -62,8 +62,9 @@ function ProductCard({ product }) {
           <img
             src={front}
             alt={product.name}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
             decoding="async"
+            fetchPriority={priority ? 'high' : 'auto'}
             onError={(e) => {
               e.currentTarget.src = PLACEHOLDER
             }}
@@ -75,30 +76,25 @@ function ProductCard({ product }) {
             alt={`${product.name} alternate`}
             loading="lazy"
             decoding="async"
+            fetchPriority="low"
             onError={(e) => {
               e.currentTarget.src = front
             }}
             className="absolute inset-0 hidden h-full w-full object-contain p-4 opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-[1.015] md:block"
           />
 
-          <div className="absolute left-3 top-3 flex flex-col gap-2">
-            {product.newArrival && (
-              <span className="bg-white px-2 py-1 text-[9px] uppercase tracking-[0.2em] shadow-sm">
-                New Drop
-              </span>
-            )}
-
-            {product.bestseller && (
+          {product.limited && (
+            <div className="absolute left-3 top-3 flex flex-col gap-2">
               <span className="bg-black px-2 py-1 text-[9px] uppercase tracking-[0.2em] text-white">
-                Best Seller
+                Limited Edition
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
           <button
             onClick={quickAdd}
             aria-label={`Add ${product.name} to cart`}
-            className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg opacity-0 transition group-hover:opacity-100 hover:scale-105"
+            className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center border border-black bg-white opacity-0 transition group-hover:opacity-100 hover:bg-black hover:text-white"
           >
             <ShoppingBag size={16} strokeWidth={1.7} />
           </button>
@@ -106,24 +102,18 @@ function ProductCard({ product }) {
 
         <div className="mt-4 flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h3 className="text-[12px] font-medium uppercase leading-5 tracking-[0.14em]">
+            <h3 className="text-[11px] uppercase leading-5 tracking-[0.18em] text-black">
               {product.name}
             </h3>
 
-            <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-neutral-400">
+            <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-neutral-400">
               {product.collection}
             </p>
           </div>
 
           <div className="shrink-0 text-right">
-            {product.compareAt && (
-              <p className="text-[11px] text-neutral-400 line-through">
-                {product.compareAt} dh
-              </p>
-            )}
-
-            <p className="text-[12px] font-medium tracking-tight">
-              {product.price} dh
+            <p className="text-[10px] uppercase tracking-[0.18em] text-neutral-500">
+              MAD {product.price}
             </p>
           </div>
         </div>

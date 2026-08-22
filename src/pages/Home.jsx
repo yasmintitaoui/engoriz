@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useTranslation } from '../i18n/useTranslation'
 
-import rioHero from '../assets/campaign/rio-hero.webp'
+import newHero from '../assets/campaign/new-hero.webp'
 import editorial01 from '../assets/campaign/editorial-01.webp'
 
 import ProductCard from '../components/product/ProductCard'
@@ -27,8 +27,8 @@ export default function Home() {
       <section className="grid min-h-[92svh] grid-cols-1 md:grid-cols-2">
         <div className="relative overflow-hidden bg-black">
           <img
-            src={rioHero}
-            alt="Rio Summer Club hero"
+            src={newHero}
+            alt="Broken But Blessed hero"
             loading="eager"
             decoding="async"
             className="h-full w-full object-cover"
@@ -39,45 +39,36 @@ export default function Home() {
           <div className="w-full max-w-xl">
             <motion.p
               {...reveal(0.08)}
-              className="text-[10px] uppercase tracking-[0.45em] text-neutral-500"
+              className="text-[10px] uppercase tracking-[0.35em] text-neutral-500"
             >
-              {t('home.newDrop')}
+              ENGORIZ / 2026
             </motion.p>
 
             <motion.h1
               {...reveal(0.18)}
-              className="mt-5 font-display text-[clamp(2.4rem,11vw,3.8rem)] uppercase leading-[0.86] tracking-[-0.03em] md:text-[clamp(2.8rem,6vw,5.8rem)]"
+              className="mt-5 font-display text-[clamp(2.8rem,10vw,6rem)] uppercase leading-[0.8] tracking-[-0.04em] md:text-[clamp(3.5rem,7vw,7.5rem)]"
             >
-              RIO SUMMER CLUB
+              BROKEN
               <br />
-              NEW DROP
-              <br />
-              NOW AVAILABLE
+              BUT BLESSED
             </motion.h1>
 
             <motion.p
               {...reveal(0.28)}
-              className="mt-6 max-w-xs text-[11px] uppercase leading-6 tracking-[0.22em] text-neutral-600 md:max-w-sm md:text-[12px]"
+              className="mt-6 max-w-xs text-[10px] uppercase leading-6 tracking-[0.28em] text-neutral-500 md:max-w-sm md:text-[11px]"
             >
-              New summer graphics, oversized cuts, and city energy.
+              SOME THINGS BREAK.
+              <br />
+              SOME THINGS BECOME.
             </motion.p>
 
-            <motion.div
-              {...reveal(0.4)}
-              className="mt-8 flex flex-wrap gap-3 md:gap-4"
-            >
+            <motion.div {...reveal(0.4)} className="mt-8">
               <Link
-                to="/shop#rio-summer-club"
-                className="rounded-full bg-black px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.25em] text-white! transition hover:text-white hover:opacity-90 md:px-7 md:text-[11px]"
+                to="/shop#broken-but-blessed"
+                className="inline-flex items-center gap-2 border-b border-black pb-1 text-[10px] font-medium uppercase tracking-[0.28em] text-black transition hover:opacity-60"
               >
-                {t('home.shopDrop')}
-              </Link>
-
-              <Link
-                to="/shop"
-                className="rounded-full border border-black bg-white px-6 py-4 text-[10px] uppercase tracking-[0.25em] text-black transition hover:bg-black hover:text-white md:px-7 md:text-[11px]"
-              >
-                {t('home.viewAll')}
+                DISCOVER THE COLLECTION
+                <span aria-hidden="true">→</span>
               </Link>
             </motion.div>
           </div>
@@ -101,12 +92,35 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* NEW DROP: RIO SUMMER CLUB */}
+      {/* LIMITED DROP: BROKEN BUT BLESSED */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
         <div className="mb-10 flex items-end justify-between">
           <div>
             <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
               New Drop
+            </p>
+
+            <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
+              Limited Edition
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
+          {products
+            .filter((p) => p.collection === 'BROKEN BUT BLESSED')
+            .map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </div>
+      </section>
+
+      {/* ARCHIVE: RIO SUMMER CLUB */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.4em] text-neutral-400">
+              Archive
             </p>
 
             <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
@@ -151,51 +165,37 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24 md:px-10 md:pb-32">
-        <div className="grid overflow-hidden md:grid-cols-2">
-          <div className="overflow-hidden">
-            <motion.img
-              src={editorial01}
-              alt="ENGORIZ Editorial"
-              loading="lazy"
-              decoding="async"
-              className="h-[62vh] w-full object-cover md:h-[78vh]"
-              initial={{ scale: 1.05 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </div>
+        <div className="relative overflow-hidden">
+          <motion.img
+            src={editorial01}
+            alt="ENGORIZ Editorial"
+            loading="lazy"
+            decoding="async"
+            className="h-[72vh] w-full object-cover md:h-[84vh]"
+            initial={{ scale: 1.04 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
 
-          <div className="flex flex-col justify-end p-10 md:p-16">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+          <div className="absolute inset-0 bg-black/10" />
+
+          <div className="absolute bottom-8 left-6 md:bottom-12 md:left-10">
+            <p className="text-[10px] uppercase tracking-[0.35em] text-white/80">
+              BROKEN BUT BLESSED / 2026
+            </p>
+
+            <h2 className="mt-4 font-display text-[clamp(3rem,6vw,5.5rem)] uppercase leading-[0.9] tracking-[-0.04em] text-white">
+              STILL HERE.
+            </h2>
+
+            <Link
+              to="/shop#broken-but-blessed"
+              className="mt-6 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-white transition hover:opacity-75"
             >
-              <p className="text-[10px] uppercase tracking-[0.38em] text-neutral-400">
-                {t('home.editorial')}
-              </p>
-
-              <h2 className="mt-4 font-display text-[clamp(3rem,6vw,5.5rem)] uppercase leading-none">
-                BUILT
-                <br />
-                WITH
-                <br />
-                PRESSURE
-              </h2>
-
-              <p className="mt-6 max-w-sm text-[13px] leading-7 text-neutral-500">
-                {t('home.editorialText')}
-              </p>
-
-              <Link
-                to="/shop"
-                className="mt-10 inline-block border-b border-black pb-1 text-[11px] uppercase tracking-[0.3em] transition hover:opacity-50"
-              >
-                {t('home.exploreStore')}
-              </Link>
-            </motion.div>
+              SHOP THE COLLECTION
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>
