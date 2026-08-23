@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { API_URL } from '../lib/api'
+import { safeSetItem } from '../lib/storage'
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('')
@@ -35,9 +36,11 @@ export default function AdminLogin() {
         throw new Error('No token returned from server')
       }
 
-      localStorage.setItem('engoriz-admin-token', data.token)
+      safeSetItem('engoriz-admin-token', data.token, 'local')
 
-      window.location.href = '/admin'
+      if (typeof window !== 'undefined') {
+        window.location.href = '/admin'
+      }
     } catch (err) {
       const message = err instanceof Error && err.message
         ? err.message

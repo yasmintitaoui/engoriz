@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Trash2 } from 'lucide-react'
 import { API_URL } from '../../lib/api'
+import { safeGetItem, safeRemoveItem } from '../../lib/storage'
 
 const statuses = ['received', 'confirmed', 'production', 'ready', 'shipped', 'delivered', 'cancelled']
 
@@ -17,16 +18,101 @@ const statusStyles = {
   new: 'bg-neutral-100 text-neutral-700',
 }
 
+const normalizeText = (value) =>
+  String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+function getCanonicalProduct(item) {
+  if (!item || typeof item !== 'object') return null
+
+  const byId =
+    products.find((product) => String(product.id) === String(item.id)) ||
+    products.find((product) => String(product.id) === String(item.productId))
+
+  if (byId) return byId
+
+  const bySlug = products.find((product) => product.slug === item.slug)
+  if (bySlug) return bySlug
+
+  const itemName = normalizeText(item.name)
+  const itemSlug = normalizeText(item.slug)
+
+  const byName = products.find((product) => {
+    const catalogName = normalizeText(product.name)
+    const catalogSlug = normalizeText(product.slug)
+
+    return (
+      catalogName === itemName ||
+      catalogSlug === itemSlug ||
+      itemName.includes(catalogName) ||
+      catalogName.includes(itemName) ||
+      (itemSlug && (catalogSlug.includes(itemSlug) || itemSlug.includes(catalogSlug)))
+    )
+  })
+
+  if (byName) return byName
+
+  const itemImage = String(item.image || '')
+
+  return products.find((product) => {
+    const candidates = [
+      product.slug,
+      product.name,
+      product.images?.front,
+      product.images?.back,
+      product.imagesByColor && Object.values(product.imagesByColor).map((imageGroup) => imageGroup?.front || imageGroup?.back),
+    ]
+      .flat()
+      .filter(Boolean)
+      .map((value) => normalizeText(value))
+
+    return candidates.some((candidate) => itemImage.toLowerCase().includes(candidate))
+  })
+}
+
 function getToken() {
-  return localStorage.getItem('engoriz-admin-token')
+  return safeGetItem('engoriz-admin-token', 'local')
+}
+
+function resolveOrderItem(item) {
+  const product = getCanonicalProduct(item)
+  const normalizedColor = item?.color || product?.colors?.[0]?.name || 'Black'
+
+  return {
+    ...item,
+    id: product?.id ?? item?.id ?? 'unknown',
+    slug: product?.slug ?? item?.slug ?? '',
+    name: product?.name ?? item?.name ?? 'Product',
+    color: normalizedColor,
+    fit: item?.fit || 'Regular',
+    quantity: Math.max(1, Number(item?.quantity) || 1),
+    price: Number(item?.price) || Number(product?.price) || 0,
+    image:
+      item?.image ||
+      product?.images?.front ||
+      product?.images?.back ||
+      '/favicon.ico',
+  }
+}
+
+function getDisplayName(item) {
+  const product = getCanonicalProduct(item)
+  return product?.name || item.name || 'Product'
 }
 
 function getItemImage(item) {
-  const product = products.find((p) => p.slug === item.slug || p.id === item.id)
+  const product = getCanonicalProduct(item)
+  const colorKey = item?.color || product?.colors?.[0]?.name
 
   return (
-    product?.imagesByColor?.[item.color]?.front ||
+    product?.imagesByColor?.[colorKey]?.front ||
+    product?.imagesByColor?.[colorKey]?.back ||
     product?.images?.front ||
+    product?.images?.back ||
     item.image ||
     '/favicon.ico'
   )
@@ -60,7 +146,14 @@ export default function AdminOrders() {
 }
 
       const data = await res.json()
-      setOrders(data.orders || [])
+      const nextOrders = (data.orders || []).map((order) => ({
+        ...order,
+        items: Array.isArray(order.items)
+          ? order.items.map((item) => resolveOrderItem(item))
+          : [],
+      }))
+
+      setOrders(nextOrders)
     } catch (error) {
       console.error(error)
       navigate('/admin-login')
@@ -160,7 +253,7 @@ export default function AdminOrders() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('engoriz-admin-token')
+    safeRemoveItem('engoriz-admin-token', 'local')
     navigate('/admin-login')
   }
 
@@ -283,7 +376,7 @@ export default function AdminOrders() {
 
                             <div>
                               <p className="text-sm font-semibold uppercase">
-                                {item.name}
+                                {getDisplayName(item)}
                               </p>
 
                               <p className="mt-1 text-sm text-neutral-500">

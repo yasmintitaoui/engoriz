@@ -465,7 +465,7 @@ const products = [
     collection: 'BROKEN BUT BLESSED',
     featured: true,
     limited: true,
-    colors: [{ name: 'Light Pink', hex: '#f7dbe7', accent: '#f0b4d0' }],
+    colors: [{ name: 'Light Pink', hex: '#f7dbe7', accent: '#FF0000' }],
     sizes: commonSizes,
     fits: commonFits,
     description: 'Limited light pink tee from the Broken But Blessed drop.',

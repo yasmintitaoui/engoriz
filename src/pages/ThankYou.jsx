@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import { Check, Clipboard } from 'lucide-react'
 import { useCartStore } from '../store/cartStore'
 import { useTranslation } from '../i18n/useTranslation'
+import { safeGetItem, safeParseJson } from '../lib/storage'
 
 export default function ThankYou() {
   const { t } = useTranslation()
@@ -19,10 +20,11 @@ export default function ThankYou() {
   }, [])
 
   useEffect(() => {
-    const savedOrder = localStorage.getItem('engoriz-last-order')
+    const savedOrder = safeGetItem('engoriz-last-order', 'local')
+    const parsedOrder = safeParseJson(savedOrder)
 
-    if (savedOrder) {
-      setOrder(JSON.parse(savedOrder))
+    if (parsedOrder) {
+      setOrder(parsedOrder)
     }
 
     clearCart()

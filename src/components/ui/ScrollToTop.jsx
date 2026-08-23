@@ -5,6 +5,8 @@ export default function ScrollToTop() {
   const { pathname, hash } = useLocation()
 
   useLayoutEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
+
     if (hash) {
       setTimeout(() => {
         const element = document.querySelector(hash)

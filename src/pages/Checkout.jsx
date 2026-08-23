@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import { Navigate, useNavigate, Link } from 'react-router-dom'
 
+import products from '../data/products'
 import { API_URL } from '../lib/api'
+import { safeSetItem } from '../lib/storage'
 
 import CitySelect from '../components/checkout/CitySelect'
 import { useCartStore } from '../store/cartStore'
@@ -12,6 +14,26 @@ const fieldClass =
 
 const textareaClass =
   'w-full resize-none rounded-xl border border-neutral-300 bg-white px-4 py-4 text-[15px] outline-none transition placeholder:text-neutral-400 focus:border-black'
+
+function normalizeCheckoutItem(item) {
+  const product =
+    products.find((entry) => entry.slug === item.slug) ||
+    products.find((entry) => String(entry.id) === String(item.id)) ||
+    products.find((entry) => String(entry.id) === String(item.productId)) ||
+    null
+
+  return {
+    ...item,
+    id: product?.id ?? item.id ?? 'unknown',
+    slug: product?.slug ?? item.slug ?? '',
+    name: product?.name ?? item.name ?? 'Product',
+    price: Number(item.price) || Number(product?.price) || 0,
+    fit: item.fit || 'Regular',
+    quantity: Math.max(1, Number(item.quantity) || 1),
+    color: item.color || product?.colors?.[0]?.name || null,
+    image: item.image || product?.images?.front || '/favicon.ico',
+  }
+}
 
 function isValidMoroccanPhone(phone) {
   const clean = String(phone || '').replace(/\s/g, '')
@@ -132,12 +154,7 @@ export default function Checkout() {
       },
 
       items: items
-        .map((item) => ({
-          ...item,
-          fit: item.fit || 'Regular',
-          quantity: Math.max(1, Number(item.quantity) || 1),
-          price: Number(item.price) || 0,
-        }))
+        .map(normalizeCheckoutItem)
         .filter((item) => item && item.name && item.price > 0),
 
       subtotal,
@@ -177,7 +194,7 @@ export default function Checkout() {
         status: 'received',
       }
 
-      localStorage.setItem('engoriz-last-order', JSON.stringify(lastOrder))
+      safeSetItem('engoriz-last-order', JSON.stringify(lastOrder), 'local')
       window.dispatchEvent(new Event('engoriz-order-placed'))
       navigate('/thank-you')
     } catch (err) {

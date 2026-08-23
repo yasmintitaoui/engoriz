@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
+import { safeGetItem, safeParseJson, safeRemoveItem, safeSetItem } from '../../lib/storage'
 
 const ADMIN_PASSWORD = 'engorizadmin'
 const SESSION_KEY = 'engoriz-admin-session'
 const SESSION_MINUTES = 30
 
 function isSessionValid() {
-  const saved = sessionStorage.getItem(SESSION_KEY)
+  const saved = safeGetItem(SESSION_KEY, 'session')
   if (!saved) return false
 
-  try {
-    const session = JSON.parse(saved)
-    return Date.now() < session.expiresAt
-  } catch {
-    return false
-  }
+  const session = safeParseJson(saved)
+  if (!session || typeof session.expiresAt !== 'number') return false
+
+  return Date.now() < session.expiresAt
 }
 
 export default function AdminGate({ children }) {
@@ -24,7 +23,7 @@ export default function AdminGate({ children }) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isSessionValid()) {
-        sessionStorage.removeItem(SESSION_KEY)
+        safeRemoveItem(SESSION_KEY, 'session')
         setUnlocked(false)
       }
     }, 15000)
@@ -40,12 +39,13 @@ export default function AdminGate({ children }) {
       return
     }
 
-    sessionStorage.setItem(
+    safeSetItem(
       SESSION_KEY,
       JSON.stringify({
         unlockedAt: Date.now(),
         expiresAt: Date.now() + SESSION_MINUTES * 60 * 1000,
-      })
+      }),
+      'session'
     )
 
     setUnlocked(true)
@@ -54,7 +54,7 @@ export default function AdminGate({ children }) {
   }
 
   const logout = () => {
-    sessionStorage.removeItem(SESSION_KEY)
+    safeRemoveItem(SESSION_KEY, 'session')
     setUnlocked(false)
   }
 
