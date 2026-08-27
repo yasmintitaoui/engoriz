@@ -5,7 +5,7 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import SideCart from './components/cart/SideCart'
 
-import LoadingScreen from './components/ui/LoadingScreen'
+
 import PageTransition from './components/ui/PageTransition'
 import ScrollToTop from './components/ui/ScrollToTop'
 
@@ -49,7 +49,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <>
-      <LoadingScreen />
+      {/* <LoadingScreen /> */}
       <ScrollToTop />
       <Navbar />
       <SideCart />
