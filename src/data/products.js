@@ -466,8 +466,8 @@ const products = [
     newArrival: true,
     new: true,
     colors: [
-      { name: 'Black / Grey', hex: '#111111', accent: '#8a8a8a' },
       { name: 'White / Army Green', hex: '#f8f4ef', accent: '#4b5d3d' },
+      { name: 'Black / Grey', hex: '#111111', accent: '#8a8a8a' },
       { name: 'White / Pink', hex: '#faf5f7', accent: '#f2a9bf' },
     ],
     sizes: commonSizes,
