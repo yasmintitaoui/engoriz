@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Trash2 } from 'lucide-react'
 import { API_URL } from '../../lib/api'
-import { safeGetItem, safeRemoveItem } from '../../lib/storage'
+import { safeGetAnyItem, safeRemoveAnyItem } from '../../lib/storage'
 
 const statuses = ['received', 'confirmed', 'production', 'ready', 'shipped', 'delivered', 'cancelled']
 
@@ -75,7 +75,7 @@ function getCanonicalProduct(item) {
 }
 
 function getToken() {
-  return safeGetItem('engoriz-admin-token', 'local')
+  return safeGetAnyItem('engoriz-admin-token', ['local', 'session'])
 }
 
 function resolveOrderItem(item) {
@@ -127,10 +127,10 @@ export default function AdminOrders() {
     const token = getToken()
 
     if (!token) {
-  setLoading(false)
-  alert('No admin token found on this phone.')
-  return
-}
+      navigate('/admin-login')
+      setLoading(false)
+      return
+    }
 
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -140,10 +140,11 @@ export default function AdminOrders() {
       })
 
       if (!res.ok) {
-  setLoading(false)
-  alert(`Admin auth failed. Status: ${res.status}`)
-  return
-}
+        safeRemoveAnyItem('engoriz-admin-token', ['local', 'session'])
+        navigate('/admin-login?reason=expired')
+        setLoading(false)
+        return
+      }
 
       const data = await res.json()
       const nextOrders = (data.orders || []).map((order) => ({
@@ -156,7 +157,8 @@ export default function AdminOrders() {
       setOrders(nextOrders)
     } catch (error) {
       console.error(error)
-      navigate('/admin-login')
+      safeRemoveAnyItem('engoriz-admin-token', ['local', 'session'])
+      navigate('/admin-login?reason=expired')
     } finally {
       setLoading(false)
     }
@@ -167,10 +169,10 @@ export default function AdminOrders() {
       const token = getToken()
 
       if (!token) {
-  setLoading(false)
-  alert('No admin token found on this phone.')
-  return
-}
+        navigate('/admin-login')
+        setLoading(false)
+        return
+      }
 
       try {
         const res = await fetch(`${API_URL}/api/auth/check`, {
@@ -180,15 +182,18 @@ export default function AdminOrders() {
         })
 
         if (!res.ok) {
-  setLoading(false)
-  alert(`Admin auth failed. Status: ${res.status}`)
-  return
-}
+          safeRemoveAnyItem('engoriz-admin-token', ['local', 'session'])
+          navigate('/admin-login?reason=expired')
+          setLoading(false)
+          return
+        }
 
         fetchOrders()
       } catch (error) {
         console.error(error)
-        navigate('/admin-login')
+        safeRemoveAnyItem('engoriz-admin-token', ['local', 'session'])
+        navigate('/admin-login?reason=expired')
+        setLoading(false)
       }
     }
 
@@ -253,8 +258,9 @@ export default function AdminOrders() {
   }
 
   const handleLogout = () => {
-    safeRemoveItem('engoriz-admin-token', 'local')
-    navigate('/admin-login')
+    safeRemoveAnyItem('engoriz-admin-token', ['local', 'session'])
+    setOrders([])
+    navigate('/admin-login?reason=expired')
   }
 
   return (

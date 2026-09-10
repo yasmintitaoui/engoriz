@@ -54,10 +54,9 @@ import rioGoldImage from '../assets/products/tees/rio-summer-club/rio-gold.webp'
 import cidadeImage from '../assets/products/tees/rio-summer-club/cidade.webp'
 import rioDeJaneiroImage from '../assets/products/tees/rio-summer-club/rio-de-janeiro.webp'
 
-import limitedPinkFront from '../assets/products/tees/limited-tees/pink/front.webp'
-import limitedPinkBack from '../assets/products/tees/limited-tees/pink/back.webp'
-import limitedBlueFront from '../assets/products/tees/limited-tees/blue/front.webp'
-import limitedBlueBack from '../assets/products/tees/limited-tees/blue/back.webp'
+import brokenBlessedBlackGrey from '../assets/products/tees/broken-blessed/black-grey.PNG'
+import brokenBlessedWhiteBrown from '../assets/products/tees/broken-blessed/white-brown.PNG'
+import brokenBlessedWhitePink from '../assets/products/tees/broken-blessed/white-pink.PNG'
 
 const commonSizes = ['S', 'M', 'L', 'XL', 'XXL']
 const commonFits = ['Regular', 'Cropped']
@@ -458,41 +457,40 @@ const products = [
 
   {
     id: 18,
-    name: 'LIMITED EDITION PINK TEE',
-    slug: 'broken-but-blessed-pink',
+    name: 'BROKEN BUT BLESSED',
+    slug: 'broken-but-blessed',
     price: 229,
     compareAt: 249,
     collection: 'BROKEN BUT BLESSED',
     featured: true,
-    limited: true,
-    colors: [{ name: 'Light Pink', hex: '#f7dbe7', accent: '#FF0000' }],
+    newArrival: true,
+    new: true,
+    colors: [
+      { name: 'Black / Grey', hex: '#111111', accent: '#8a8a8a' },
+      { name: 'White / Army Green', hex: '#f8f4ef', accent: '#4b5d3d' },
+      { name: 'White / Pink', hex: '#faf5f7', accent: '#f2a9bf' },
+    ],
     sizes: commonSizes,
     fits: commonFits,
-    description: 'Limited light pink tee from the Broken But Blessed drop.',
+    description: 'Broken But Blessed graphic tee. Made by demand after order confirmation.',
     details: commonDetails,
     images: {
-      front: limitedPinkFront,
-      back: limitedPinkBack,
+      front: brokenBlessedBlackGrey,
+      back: brokenBlessedBlackGrey,
     },
-  },
-
-  {
-    id: 19,
-    name: 'LIMITED EDITION BLUE TEE',
-    slug: 'broken-but-blessed-blue',
-    price: 229,
-    compareAt: 249,
-    collection: 'BROKEN BUT BLESSED',
-    featured: true,
-    limited: true,
-    colors: [{ name: 'Light Blue', hex: '#dfeeff', accent: '#9dc7ef' }],
-    sizes: commonSizes,
-    fits: commonFits,
-    description: 'Limited light blue tee from the Broken But Blessed drop.',
-    details: commonDetails,
-    images: {
-      front: limitedBlueFront,
-      back: limitedBlueBack,
+    imagesByColor: {
+      'Black / Grey': {
+        front: brokenBlessedBlackGrey,
+        back: brokenBlessedBlackGrey,
+      },
+      'White / Army Green': {
+        front: brokenBlessedWhiteBrown,
+        back: brokenBlessedWhiteBrown,
+      },
+      'White / Pink': {
+        front: brokenBlessedWhitePink,
+        back: brokenBlessedWhitePink,
+      },
     },
   },
 

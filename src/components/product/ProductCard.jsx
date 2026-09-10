@@ -83,11 +83,19 @@ function ProductCard({ product, priority = false }) {
             className="absolute inset-0 hidden h-full w-full object-contain p-4 opacity-0 transition duration-700 group-hover:opacity-100 group-hover:scale-[1.015] md:block"
           />
 
-          {product.limited && (
+          {(product.new || product.newArrival || product.limited) && (
             <div className="absolute left-3 top-3 flex flex-col gap-2">
-              <span className="bg-black px-2 py-1 text-[9px] uppercase tracking-[0.2em] text-white">
-                Limited Edition
-              </span>
+              {product.new && (
+                <span className="bg-black px-2 py-1 text-[9px] uppercase tracking-[0.2em] text-white">
+                  New
+                </span>
+              )}
+
+              {product.limited && (
+                <span className="bg-black px-2 py-1 text-[9px] uppercase tracking-[0.2em] text-white">
+                  Limited Edition
+                </span>
+              )}
             </div>
           )}
 

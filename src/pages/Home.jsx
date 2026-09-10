@@ -101,7 +101,7 @@ export default function Home() {
             </p>
 
             <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">
-              Limited Edition
+              BROKEN BUT BLESSED
             </h2>
           </div>
         </div>

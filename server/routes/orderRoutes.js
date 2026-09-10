@@ -5,12 +5,14 @@ const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+  ? createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    )
+  : null
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 async function sendOrderEmails(savedOrder) {
   if (!process.env.RESEND_API_KEY) {
@@ -132,9 +134,9 @@ router.post('/', async (req, res) => {
       })
     }
 
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    if (!supabase) {
       return res.status(503).json({
-        error: 'Checkout service is not configured.',
+        error: 'Checkout service is not configured. Supabase may be paused or missing credentials.',
       })
     }
 
@@ -212,14 +214,21 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/', auth, async (req, res) => {
+  if (!supabase) {
+    return res.status(503).json({
+      error: 'Orders database is unavailable. Supabase may be paused or missing credentials.',
+    })
+  }
+
   const { data, error } = await supabase
     .from('orders')
     .select('*')
     .order('created_at', { ascending: false })
 
   if (error) {
-    return res.status(500).json({
-      error: 'Failed to fetch orders',
+    console.error('Supabase fetch error:', error)
+    return res.status(503).json({
+      error: 'Orders database is unavailable. Supabase may be paused or missing credentials.',
     })
   }
 

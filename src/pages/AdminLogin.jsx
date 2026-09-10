@@ -1,12 +1,16 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { API_URL } from '../lib/api'
-import { safeSetItem } from '../lib/storage'
+import { safeSetAnyItem } from '../lib/storage'
 
 export default function AdminLogin() {
+  const [searchParams] = useSearchParams()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState(searchParams.get('reason') === 'expired'
+    ? 'Session expired. Please sign in again.'
+    : '')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -26,17 +30,23 @@ export default function AdminLogin() {
         }),
       })
 
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
 
       if (!res.ok) {
-        throw new Error(data.error || 'Login failed')
+        const backendError = data?.error || 'Login failed'
+
+        if (backendError.toLowerCase().includes('supabase')) {
+          throw new Error('The orders database is unavailable. Supabase may be paused or disconnected.')
+        }
+
+        throw new Error(backendError)
       }
 
       if (!data.token) {
         throw new Error('No token returned from server')
       }
 
-      safeSetItem('engoriz-admin-token', data.token, 'local')
+      safeSetAnyItem('engoriz-admin-token', data.token, ['local', 'session'])
 
       if (typeof window !== 'undefined') {
         window.location.href = '/admin'
@@ -49,7 +59,9 @@ export default function AdminLogin() {
       setError(
         message === 'Failed to fetch'
           ? 'Unable to reach the admin server. Check the backend URL and try again.'
-          : message
+          : message.includes('Supabase')
+            ? 'The orders database is unavailable. Supabase may be paused or disconnected.'
+            : message
       )
     } finally {
       setLoading(false)
@@ -63,6 +75,12 @@ export default function AdminLogin() {
         className="w-full max-w-md rounded-3xl border border-neutral-200 p-8"
       >
         <h1 className="text-3xl font-black uppercase">Admin Login</h1>
+
+        {error && (
+          <p className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+            {error}
+          </p>
+        )}
 
         <div className="mt-8 space-y-5">
           <input
