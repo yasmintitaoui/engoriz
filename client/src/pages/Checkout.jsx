@@ -27,8 +27,9 @@ function normalizeCheckoutItem(item) {
     id: product?.id ?? item.id ?? 'unknown',
     slug: product?.slug ?? item.slug ?? '',
     name: product?.name ?? item.name ?? 'Product',
+    category: product?.category ?? item.category ?? null,
     price: Number(item.price) || Number(product?.price) || 0,
-    fit: item.fit || 'Regular',
+    fit: product?.category === 'hoodies' ? null : item.fit || 'Regular',
     quantity: Math.max(1, Number(item.quantity) || 1),
     color: item.color || product?.colors?.[0]?.name || null,
     image: item.image || product?.images?.front || '/favicon.ico',
@@ -352,6 +353,9 @@ export default function Checkout() {
                   ? t('checkout.completing')
                   : t('checkout.completeOrder')}
               </button>
+              <p className="-mt-6 text-center text-xs leading-5 text-neutral-500">
+                {t('checkout.cod')} · {t('checkout.total')}: MAD {total.toLocaleString()}.00
+              </p>
             </form>
           </div>
         </section>
@@ -361,7 +365,7 @@ export default function Checkout() {
             <div className="space-y-5">
               {items.map((item) => (
                 <div
-                  key={`${item.id}-${item.size}-${item.color}-${item.fit}`}
+                  key={`${item.id}-${item.size}-${item.color}-${item.fit ?? 'none'}`}
                   className="flex gap-4"
                 >
                   <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-white">
@@ -382,7 +386,7 @@ export default function Checkout() {
 
                       <p className="mt-1 text-sm text-neutral-500">
                         {item.color || 'Black'} ·{' '}
-                        {item.fit || 'Regular'} · {item.size} · Qty{' '}
+                        {item.fit && `${item.fit} · `}{item.size} · Qty{' '}
                         {item.quantity}
                       </p>
                     </div>

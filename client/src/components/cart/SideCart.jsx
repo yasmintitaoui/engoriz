@@ -45,7 +45,7 @@ export default function SideCart() {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="absolute right-0 top-0 flex h-full w-full max-w-[520px] flex-col bg-white shadow-2xl"
           >
-            <div className="flex items-center justify-between border-b border-neutral-200 px-8 py-6">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-5 sm:px-8 sm:py-6">
               <div className="flex items-center gap-4">
                 <ShoppingBag size={20} strokeWidth={1.5} />
                 <h2 className="text-sm font-medium uppercase tracking-[0.35em]">
@@ -62,7 +62,7 @@ export default function SideCart() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-8 py-8">
+            <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-8 sm:py-8">
               {items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
                   <p className="text-sm uppercase tracking-[0.25em] text-neutral-400">
@@ -81,8 +81,8 @@ export default function SideCart() {
                 <div className="space-y-8">
                   {items.map((item) => (
                     <div
-                      key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'Regular'}`}
-                      className="grid grid-cols-[110px_1fr] gap-6"
+                      key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'none'}`}
+                      className="grid grid-cols-[88px_minmax(0,1fr)] gap-4 sm:grid-cols-[110px_1fr] sm:gap-6"
                     >
                       <div className="aspect-[4/5] overflow-hidden bg-white">
                         <img
@@ -102,8 +102,7 @@ export default function SideCart() {
                             </p>
 
                             <p className="mt-1 text-sm text-neutral-500">
-                              {item.fit || 'Regular'} · {item.size} ·{' '}
-                              {item.color || 'Black'}
+                              {item.fit && `${item.fit} · `}{item.size} · {item.color || 'Black'}
                             </p>
                           </div>
 
@@ -113,7 +112,7 @@ export default function SideCart() {
                                 item.id,
                                 item.size,
                                 item.color,
-                                item.fit || 'Regular'
+                                item.fit
                               )
                             }
                             aria-label={`Remove ${item.name}`}
@@ -131,7 +130,7 @@ export default function SideCart() {
                                   item.id,
                                   item.size,
                                   item.color,
-                                  item.fit || 'Regular'
+                                  item.fit
                                 )
                               }
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
@@ -149,7 +148,7 @@ export default function SideCart() {
                                   item.id,
                                   item.size,
                                   item.color,
-                                  item.fit || 'Regular'
+                                  item.fit
                                 )
                               }
                               className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
@@ -170,7 +169,7 @@ export default function SideCart() {
             </div>
 
             {items.length > 0 && (
-              <div className="border-t border-neutral-200 px-8 py-7">
+              <div className="border-t border-neutral-200 px-5 py-6 sm:px-8 sm:py-7">
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
                     <p className="uppercase tracking-[0.22em] text-neutral-500">

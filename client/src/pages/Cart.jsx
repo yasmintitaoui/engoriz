@@ -61,7 +61,7 @@ export default function Cart() {
         <section className="divide-y divide-neutral-200 border-y border-neutral-200">
           {items.map((item) => (
             <div
-              key={`${item.id}-${item.size}-${item.color ?? 'none'}`}
+              key={`${item.id}-${item.size}-${item.color ?? 'none'}-${item.fit ?? 'none'}`}
               className="grid grid-cols-[96px_1fr] gap-5 py-6 sm:grid-cols-[130px_1fr] md:gap-8 md:py-8"
             >
               <div className="aspect-[4/5] overflow-hidden bg-neutral-100">
@@ -85,7 +85,7 @@ export default function Cart() {
                   </div>
 
                   <button
-                    onClick={() => removeItem(item.id, item.size, item.color)}
+                    onClick={() => removeItem(item.id, item.size, item.color, item.fit)}
                     aria-label={`Remove ${item.name}`}
                     className="text-neutral-500 transition hover:text-black"
                   >
@@ -97,7 +97,7 @@ export default function Cart() {
                   <div className="flex h-10 items-center border border-neutral-300">
                     <button
                       onClick={() =>
-                        decreaseQuantity(item.id, item.size, item.color)
+                        decreaseQuantity(item.id, item.size, item.color, item.fit)
                       }
                       aria-label={`Decrease quantity of ${item.name}`}
                       className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"
@@ -111,7 +111,7 @@ export default function Cart() {
 
                     <button
                       onClick={() =>
-                        increaseQuantity(item.id, item.size, item.color)
+                        increaseQuantity(item.id, item.size, item.color, item.fit)
                       }
                       aria-label={`Increase quantity of ${item.name}`}
                       className="flex h-10 w-10 items-center justify-center transition hover:bg-neutral-100"

@@ -20,7 +20,7 @@ function DropSection({ id, eyebrow, title, description, items, pageSize = 6 }) {
               {eyebrow}
             </p>
 
-            <h2 className="mt-3 font-display text-5xl uppercase leading-none md:text-6xl">
+            <h2 className="mt-3 font-display text-4xl uppercase leading-none sm:text-5xl md:text-6xl">
               {title}
             </h2>
           </div>
@@ -69,7 +69,7 @@ export default function Category() {
             ENGORIZ / W’26 RELEASE
           </p>
 
-          <h1 className="mt-4 font-display text-6xl uppercase leading-none sm:text-7xl md:text-8xl">
+            <h1 className="mt-4 max-w-full font-display text-5xl uppercase leading-none sm:text-7xl md:text-8xl">
             Shop the release
           </h1>
 

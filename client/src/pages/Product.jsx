@@ -67,7 +67,7 @@ function InfoRow({ title, children }) {
   )
 }
 
-function SizeGuideModal({ open, onClose, selectedFit }) {
+function SizeGuideModal({ open, onClose, selectedFit, isHoodie }) {
   const { t } = useTranslation()
   const rows = sizeChart[selectedFit] || sizeChart.Regular
 
@@ -98,7 +98,7 @@ function SizeGuideModal({ open, onClose, selectedFit }) {
                 </p>
 
                 <h2 className="mt-2 text-2xl font-black uppercase tracking-tight">
-                  {selectedFit} {t('product.sizeGuide')}
+                  {!isHoodie && `${selectedFit} `}{t('product.sizeGuide')}
                 </h2>
               </div>
 
@@ -236,7 +236,7 @@ export default function Product() {
       },
       selectedSize,
       selectedColor,
-      selectedFit
+      product.category === 'hoodies' ? null : selectedFit
     )
 
     setError('')
@@ -250,10 +250,17 @@ export default function Product() {
         open={sizeGuideOpen}
         onClose={() => setSizeGuideOpen(false)}
         selectedFit={selectedFit}
+        isHoodie={product?.category === 'hoodies'}
       />
 
       <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 md:px-10 md:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-        <section>
+        <section className="min-w-0">
+          <Link
+            to="/shop"
+            className="mb-4 inline-flex min-h-11 items-center text-[10px] uppercase tracking-[0.2em] text-neutral-500 transition hover:text-black focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4"
+          >
+            ← {t('nav.shop')}
+          </Link>
           <div className="overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.img
@@ -266,13 +273,13 @@ export default function Product() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="aspect-3/4 w-full object-contain"
+                className="aspect-[4/4.7] w-full bg-neutral-50 object-contain md:aspect-3/4"
               />
             </AnimatePresence>
           </div>
 
           {imageKeys.length > 1 && (
-            <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
+            <div className="mt-4 flex min-w-0 max-w-full gap-3 overflow-x-auto pb-1">
               {imageKeys.map((key) => (
                 <button
                   key={key}
@@ -297,7 +304,7 @@ export default function Product() {
           )}
         </section>
 
-        <section className="lg:sticky lg:top-12 lg:h-fit">
+        <section className="min-w-0 lg:sticky lg:top-12 lg:h-fit">
           <p className="text-[11px] uppercase tracking-[0.35em] text-neutral-400">
             {product.collection}
           </p>
@@ -365,7 +372,7 @@ export default function Product() {
             </div>
           )}
 
-          {product.fits?.length > 0 && (
+          {product.category !== 'hoodies' && product.fits?.length > 0 && (
             <div className="mt-8">
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-[12px] uppercase tracking-[0.22em]">Fit</p>
@@ -405,7 +412,7 @@ export default function Product() {
                   onClick={() => setSizeGuideOpen(true)}
                   className="text-[11px] uppercase tracking-[0.22em] text-neutral-500 underline underline-offset-4 transition hover:text-black"
                 >
-                  {selectedFit} {t('product.sizeGuide')}
+                  {product.category === 'hoodies' ? t('product.sizeGuide') : `${selectedFit} ${t('product.sizeGuide')}`}
                 </button>
               </div>
 
@@ -413,6 +420,7 @@ export default function Product() {
                 {product.sizes.map((size) => (
                   <button
                     key={size}
+                    type="button"
                     onClick={() => {
                       setSelectedSize(size)
                       setError('')
@@ -422,6 +430,7 @@ export default function Product() {
                         ? 'border-black bg-black text-white'
                         : 'border-neutral-300 bg-white hover:border-black'
                     }`}
+                    aria-pressed={selectedSize === size}
                   >
                     {size}
                   </button>

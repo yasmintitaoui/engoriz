@@ -42,10 +42,11 @@ const normalizeItem = (item) => {
     id: canonicalProduct?.id ?? item.id ?? 'unknown',
     name,
     slug,
+    category: canonicalProduct?.category || item.category || null,
     price,
     size: item.size || '',
     color: item.color || canonicalProduct?.colors?.[0]?.name || null,
-    fit: item.fit || 'Regular',
+    fit: canonicalProduct?.category === 'hoodies' ? null : item.fit || 'Regular',
     quantity,
     image: resolvedImage,
   }

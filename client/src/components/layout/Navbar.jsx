@@ -39,7 +39,7 @@ export default function Navbar() {
             <button
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
-              className="rounded-full p-2 transition hover:bg-neutral-100"
+              className="flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-neutral-100"
             >
               <Menu size={22} strokeWidth={1.5}/>
             </button>
@@ -80,7 +80,7 @@ export default function Navbar() {
           </Link>
 
 
-          <div className="absolute right-5 flex items-center gap-4 md:right-10 md:gap-6">
+          <div className="absolute right-3 flex items-center gap-1 sm:right-5 sm:gap-3 md:right-10 md:gap-6">
 
             <div className="items-center gap-2 text-[10px] uppercase tracking-[0.18em]">
               <button
@@ -112,7 +112,7 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="rounded-full p-2 transition hover:bg-neutral-100"
+              className="flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-neutral-100"
             >
               <Search size={19} strokeWidth={1.55}/>
             </button>
@@ -130,7 +130,7 @@ export default function Navbar() {
             <button
               onClick={toggleCart}
               aria-label="Open cart"
-              className="relative rounded-full p-2 transition hover:bg-neutral-100"
+              className="relative flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-neutral-100"
             >
               <ShoppingBag size={19} strokeWidth={1.55}/>
 

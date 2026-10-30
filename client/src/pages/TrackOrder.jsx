@@ -11,6 +11,13 @@ import {
 } from 'lucide-react'
 import { API_URL } from '../lib/api'
 import { useTranslation } from '../i18n/useTranslation'
+import products from '../data/products'
+
+function getCatalogProduct(item) {
+  return products.find((product) =>
+    product.slug === item.slug || String(product.id) === String(item.id)
+  )
+}
 
 const statusSteps = [
   {
@@ -281,7 +288,8 @@ export default function TrackOrder() {
                         </p>
 
                         <p className="mt-1 text-xs text-neutral-500">
-                          {item.color || 'Black'} · {item.fit || 'Regular'} ·
+                          {item.color || 'Black'} ·{' '}
+                          {getCatalogProduct(item)?.category === 'hoodies' ? '' : `${item.fit || 'Regular'} · `}
                           Size {item.size} · Qty {item.quantity}
                         </p>
                       </div>

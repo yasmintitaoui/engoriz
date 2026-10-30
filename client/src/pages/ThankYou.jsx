@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Check, Clipboard } from 'lucide-react'
 import { useCartStore } from '../store/cartStore'
+import products from '../data/products'
 import { useTranslation } from '../i18n/useTranslation'
 import { safeGetItem, safeParseJson } from '../lib/storage'
 
@@ -71,6 +72,13 @@ export default function ThankYou() {
 
           <div className="mt-5 space-y-4">
             {order.items.map((item, index) => (
+              (() => {
+                const product = products.find((entry) =>
+                  entry.slug === item.slug || String(entry.id) === String(item.id)
+                )
+                const fit = product?.category === 'hoodies' ? null : item.fit || 'Regular'
+
+                return (
               <div key={index} className="flex items-center gap-4">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white">
                   <img
@@ -89,7 +97,7 @@ export default function ThankYou() {
 
                   <p className="mt-1 text-xs text-neutral-500">
                     {item.color || 'Black'} ·{' '}
-                    {item.fit || 'Regular'} · Size {item.size} · Qty{' '}
+                    {fit && `${fit} · `}Size {item.size} · Qty{' '}
                     {item.quantity}
                   </p>
                 </div>
@@ -98,6 +106,8 @@ export default function ThankYou() {
                   MAD {(item.price * item.quantity).toLocaleString()}.00
                 </p>
               </div>
+                )
+              })()
             ))}
           </div>
 

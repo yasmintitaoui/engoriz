@@ -35,9 +35,11 @@ function ProductCard({ product, priority = false }) {
       ? 'M'
       : product.sizes?.[0]
 
-    const defaultFit = product.fits?.includes('Regular')
-      ? 'Regular'
-      : product.fits?.[0] || 'Regular'
+    const defaultFit = product.category === 'hoodies'
+      ? null
+      : product.fits?.includes('Regular')
+        ? 'Regular'
+        : product.fits?.[0] || 'Regular'
 
     if (!defaultSize) return
 
@@ -61,7 +63,7 @@ function ProductCard({ product, priority = false }) {
         to={`/product/${product.slug}`}
         className="block focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4"
       >
-        <div className="relative aspect-4/5 overflow-hidden">
+        <div className="relative aspect-4/5 overflow-hidden bg-neutral-50">
           <img
             src={front}
             alt={product.name}
@@ -115,7 +117,7 @@ function ProductCard({ product, priority = false }) {
 
         <div className="mt-3 flex items-start justify-between gap-3 sm:mt-4 sm:gap-4">
           <div className="min-w-0">
-            <h3 className="text-[10px] uppercase leading-5 tracking-[0.12em] text-black transition group-hover:text-neutral-600 sm:text-[11px] sm:tracking-[0.16em]">
+            <h3 className="text-[11px] uppercase leading-5 tracking-[0.08em] text-black transition group-hover:text-neutral-600 sm:text-xs sm:tracking-[0.12em]">
               {product.name}
             </h3>
 
@@ -125,9 +127,14 @@ function ProductCard({ product, priority = false }) {
           </div>
 
           <div className="shrink-0 text-right">
-            <p className="text-[9px] uppercase tracking-[0.12em] text-neutral-500 sm:text-[10px] sm:tracking-[0.16em]">
+            <p className="text-[10px] uppercase tracking-[0.08em] text-neutral-600 sm:text-[11px] sm:tracking-[0.12em]">
               MAD {product.price}
             </p>
+            {product.compareAt && (
+              <p className="mt-1 text-[9px] text-neutral-400 sm:text-[10px]">
+                <s>MAD {product.compareAt}</s>
+              </p>
+            )}
           </div>
         </div>
 
